@@ -1,0 +1,48 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title"></ui:define>
+
+    <ui:define name="notes">
+        <p>
+            Note that in "development" mode you can make changes to flow
+            definitions without the need to restart the server. The
+            development mode is specified in <span class="alt">src/main/webapp/WEB-INF/spring/appServlet/webflow.xml</span>.
+        </p>
+        <hr />
+    </ui:define>
+
+    <h:form>
+        <h:panelGrid columns="2" cellpadding="5"
+            style="margin-left: 20px">
+            <h:outputText value="Inline: " />
+            <p:colorPicker mode="inline" />
+
+            <h:outputText value="Popup: " />
+            <p:colorPicker />
+        </h:panelGrid>
+
+        <p:separator />
+
+        <p:commandButton value="Submit" oncomplete="PF('dlg').show();"
+            update="grid" style="margin-left: 20px" />
+
+        <p:dialog modal="true" widgetVar="dlg" showEffect="fade"
+            hideEffect="fade" header="Selected Colors" resizable="false">
+            <h:panelGrid id="grid" columns="2" cellpadding="5">
+                <h:outputText value="Inline color: " />
+                <h:outputText value=""
+                    style="background-color: \#" />
+
+                <h:outputText value="Popup color: " />
+                <h:outputText value=""
+                    style="background-color: \#111111" />
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
+
+</ui:composition>

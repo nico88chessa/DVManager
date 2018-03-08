@@ -28,7 +28,7 @@
 
     <servlet-mapping>
         <servlet-name>appServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
 
 
@@ -64,10 +64,8 @@
     </servlet-mapping>
     
 
-
-
     <welcome-file-list>
-        <welcome-file>index.hhtml</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
 </web-app>
