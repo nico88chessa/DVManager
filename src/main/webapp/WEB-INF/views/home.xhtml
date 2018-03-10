@@ -5,44 +5,57 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:p="http://primefaces.org/ui">
 
-    <ui:define name="title"></ui:define>
+    <f:view contentType="text/html">
 
-    <ui:define name="notes">
-        <p>
-            Note that in "development" mode you can make changes to flow
-            definitions without the need to restart the server. The
-            development mode is specified in <span class="alt">src/main/webapp/WEB-INF/spring/appServlet/webflow.xml</span>.
-        </p>
-        <hr />
-    </ui:define>
+        <h:form>
+            <h:head>
+                <meta http-equiv="Content-Type"
+                    content="text/html; charset=UTF-8" />
+                <title>JSF 2, Spring Web Flow, and PrimeFaces
+                    Showcase</title>
+                <link
+                    href="http://javax.faces.resource/theme.css.jspx?ln=primefaces-aristo"
+                    rel="stylesheet" type="text/css" />
+            </h:head>
 
-    <h:form>
-        <h:panelGrid columns="2" cellpadding="5"
-            style="margin-left: 20px">
-            <h:outputText value="Inline: " />
-            <p:colorPicker mode="inline" />
 
-            <h:outputText value="Popup: " />
-            <p:colorPicker />
-        </h:panelGrid>
+            <ui:define name="title"></ui:define>
 
-        <p:separator />
+            <ui:define name="notes">
+                <p>
+                    Note that in "development" mode you can make changes
+                    to flow definitions without the need to restart the
+                    server. The development mode is specified in <span
+                        class="alt">src/main/webapp/WEB-INF/spring/appServlet/webflow.xml</span>.
+                </p>
+                <hr />
+            </ui:define>
 
-        <p:commandButton value="Submit" oncomplete="PF('dlg').show();"
-            update="grid" style="margin-left: 20px" />
+            <h:body>
 
-        <p:dialog modal="true" widgetVar="dlg" showEffect="fade"
-            hideEffect="fade" header="Selected Colors" resizable="false">
-            <h:panelGrid id="grid" columns="2" cellpadding="5">
-                <h:outputText value="Inline color: " />
-                <h:outputText value=""
-                    style="background-color: \#" />
+                <p:panel id="panel2" header="Form"
+                    style="margin-bottom:10px;">
+                    <p:messages id="messages" />
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel for="name" value="#{Prova.name}:" />
+                        <p:inputText id="name" required="true"
+                            value="#{Prova.name}:" />
 
-                <h:outputText value="Popup color: " />
-                <h:outputText value=""
-                    style="background-color: \#111111" />
-            </h:panelGrid>
-        </p:dialog>
-    </h:form>
+                        <p:outputLabel for="extended"
+                            value="Extended Label:" />
+                        <p:inputText id="extended" required="true" />
 
+                        <p:outputLabel for="number" value="Number:" />
+                        <p:spinner id="number" value="0" />
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:commandButton value="Submit" ajax="false"
+                    update="panel" actionListener="#{Prova.setName}" />
+
+
+
+            </h:body>
+        </h:form>
+    </f:view>
 </ui:composition>
