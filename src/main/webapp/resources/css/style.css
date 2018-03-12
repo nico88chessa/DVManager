@@ -1,18 +1,31 @@
 @charset "UTF-8";
 
-#left {
+div #header {
+	margin: 5px;
+	position: absolute;
+	top: 0px;
+	height: 100px;
+    width: 90%;
+	background-color: #00FFFF;
+}
+
+div #left {
+    margin: 5px;
     position: absolute;
-    top: 0 px;
-    width: 30%;
-    height: 90%;
+    top: 110px;
+    min-width: 500px;
+    max-width: 500px;
+    height: 80%;
     background-color: #FF0000;
 }
 
-#content {
+div #content {
+    margin: 5px;
     position: absolute;
-    top: 0 px;
-    left: 35%;
-    height: 90%;
+    top: 110px;
+    left: 515px;
+    height: 50%;
     width: 55%;
+    height: 80%;
     background-color: #FFFF00;
 }

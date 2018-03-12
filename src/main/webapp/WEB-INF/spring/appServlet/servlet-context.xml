@@ -55,6 +55,7 @@
         <property name="flowExecutor" ref="flowExecutor" />
     </bean>
 
-    <bean id="Prova" class="com.dv.webmanager.Prova" scope="session" />
+    <import resource="../../beans-configuration/applicationBeans.xml" />
+    
 
 </beans>
