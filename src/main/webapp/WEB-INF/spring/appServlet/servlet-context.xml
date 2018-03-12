@@ -55,7 +55,7 @@
         <property name="flowExecutor" ref="flowExecutor" />
     </bean>
 
-    <import resource="../../beans-configuration/applicationBeans.xml" />
+    <import resource="./application-beans/beans.xml" />
     
 
 </beans>
