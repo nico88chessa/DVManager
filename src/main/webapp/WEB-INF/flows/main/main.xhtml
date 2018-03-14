@@ -14,29 +14,31 @@
         
             <div id="divDBManagement" >
                 
-                <p:panel id="panelDBManagement" rendered="#{mainData.renderDBManagement}">
+                <p:panel id="panelDBManagement" visible="#{mainBean.showDBManagement}">
                     <p:outputLabel value="QUI va il contenuto" />
                 </p:panel>
                 
             </div>
+            
             
             <div id="divUserManagement">
                 
-                <p:panel id="panelUserManagement" rendered="#{mainData.renderUserManagement}">
+                <p:panel id="panelUserManagement" rendered="#{mainBean.showUserManagement}">
                     <p:outputLabel value="QUI va il contenuto" />
                 </p:panel>
+            
             </div>
             
-            <p:accordionPanel id="loginAccordionPanel">
-                <p:tab title="prova">
-                </p:tab>
-                <p:tab title="prova2">
-                    <p:inputText name="Ciao" />
-                    <p:commandButton id="buttonTest" value="Test"
-                        actionListener="#{mainData.setRenderDBManagement(true)}" update="panelDBManagement">
-                    </p:commandButton>
-                </p:tab>
-            </p:accordionPanel>
+            
+            <div id="divDBData">
+            
+                <p:panel id="panelDBData" rendered="#{mainBean.showDBData}">
+                    <p:outputLabel value="QUI va il contenuto" />
+                </p:panel>
+            
+            </div>
+            
+            
         </ui:define>
 
     </ui:composition>

@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flow xmlns="http://www.springframework.org/schema/webflow"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/webflow
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-	<view-state id="main">
-	</view-state>
+    <on-start>
+        <evaluate expression="mainCtrl.init()" />
+    </on-start>
+
+    <view-state id="dbManagement">
+        <transition on="dbManagementAction" to="dbManagement" />
+        <transition on="userManagementAction" to="userManagement" />
+        <transition on="dbDataAction" to="dbData" />
+    </view-state>
+
+    <view-state id="userManagement">
+        <transition on="dbManagementAction" to="dbManagement" />
+        <transition on="userManagementAction" to="userManagement" />
+        <transition on="dbDataAction" to="dbData" />
+    </view-state>
+
+    <view-state id="dbData">
+        <transition on="dbManagementAction" to="dbManagement" />
+        <transition on="userManagementAction" to="userManagement" />
+        <transition on="dbDataAction" to="dbData" />
+    </view-state>
+
 
 </flow>

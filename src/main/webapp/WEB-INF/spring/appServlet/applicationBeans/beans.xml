@@ -13,6 +13,9 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <bean id="applicationContextAware" class="com.dv.webmanager.core.ApplicationContextAwareImpl" scope="singleton" />
+
     <import resource="./main/main.xml" />
+    
 
 </beans>

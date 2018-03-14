@@ -29,3 +29,14 @@ div #content {
     height: 80%;
     background-color: #FFFF00;
 }
+
+.ui-icon-myCancel {
+    background-image: url("#{resource['icons/ic_delete_black_48dp_1x.png']}") !important;
+    width:48px !important;
+    height:48px !important;
+    position: absolute !important;
+    top: 0px !important;
+    left: 0px !important;
+    margin-left: 0px !important;
+    margin-top: 0px !important;
+}

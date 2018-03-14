@@ -13,9 +13,10 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="mainData" class="com.dv.webmanager.main.MainData" scope="session" />
-    
-    <bean id="mainController" class="com.dv.webmanager.main.MainController" scope="session" />
+
+    <bean id="mainBean" class="com.dv.webmanager.main.MainBean" scope="session" />
+        
+    <bean id="mainCtrl" class="com.dv.webmanager.main.MainCtrl" scope="prototype" />
 
 </beans>
 
