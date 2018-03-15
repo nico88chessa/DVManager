@@ -55,6 +55,8 @@
         <property name="flowExecutor" ref="flowExecutor" />
     </bean>
 
+    <import resource="./mybatis-config.xml" />
+
     <import resource="./applicationBeans/beans.xml" />
     
 
