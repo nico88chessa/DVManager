@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
+import com.dv.webmanager.db.bean.Machine;
 import com.dv.webmanager.db.bean.Ticket;
 import com.dv.webmanager.db.mapper.TicketMapper;
 import com.dv.webmanager.main.MainBean;
@@ -15,7 +16,7 @@ public class MainCtrl {
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
         
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
-        List<Ticket> tickets = mapper.selectTicket();
+        List<Machine> tickets = mapper.selectMachine();
         
         bean.setShowDBManagement(false);
         bean.setShowUserManagement(false);
