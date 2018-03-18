@@ -4,24 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
-import com.dv.webmanager.db.bean.Machine;
-import com.dv.webmanager.db.bean.Ticket;
-import com.dv.webmanager.db.mapper.TicketMapper;
-import com.dv.webmanager.main.MainBean;
 
 public class MainCtrl {
-    
+
     public void init() {
-        
+
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        
-        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
-        List<Machine> tickets = mapper.selectMachine();
-        
+
+//        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+//        List<Machine> tickets = mapper.selectMachine();
+
         bean.setShowDBManagement(false);
         bean.setShowUserManagement(false);
         bean.setShowDBData(true);
-        
+
         List<MainBean.Machine> machines = new ArrayList<MainBean.Machine>();
         for (int i=0; i<20; i++) {
             MainBean.Machine temp = new MainBean.Machine();
@@ -31,37 +27,37 @@ public class MainCtrl {
             machines.add(temp);
         }
         bean.setMachines(machines);
-        
+
     }
-    
+
     public void showDBManagement() {
-        
+
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        
+
         bean.setShowDBManagement(true);
         bean.setShowUserManagement(false);
         bean.setShowDBData(false);
 
     }
-    
+
     public void showUserManagement() {
-        
+
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        
+
         bean.setShowDBManagement(false);
         bean.setShowUserManagement(true);
         bean.setShowDBData(false);
 
     }
-    
+
     public void showDBData() {
-        
+
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        
+
         bean.setShowDBManagement(false);
         bean.setShowUserManagement(false);
         bean.setShowDBData(true);
 
-    }    
-    
+    }
+
 }

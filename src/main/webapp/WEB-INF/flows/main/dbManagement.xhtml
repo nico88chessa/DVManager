@@ -6,13 +6,12 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:p="http://primefaces.org/ui">
 
+
 <h:body>
     
     <ui:composition template="/WEB-INF/layout/appLayout.xhtml">
     
         <ui:define name="content">
-         
-        
 
             <div id="divDBManagement">
             
@@ -22,13 +21,15 @@
                         
                         <p:panel id="panelAddMachine">
                             <h:panelGrid columns="2" cellpadding="10" columnClasses="ui-grid-col-2, ui-grid-col-4" style="width:100%">
-                                <f:facet name="header">Aggiungi Macchina</f:facet>
+                                <f:facet name="header">
+                                    <p:outputLabel value="Aggiungi macchina" />
+                                </f:facet>
 
-                                <h:outputText value="ID Macchina" />
+                                <p:outputLabel value="ID Macchina" />
                                 <p:inputMask value="" mask="9?99" slotChar=" " />
                             
                             
-                                <h:outputText value="Indirizzo IP" />
+                                <p:outputLabel value="Indirizzo IP" />
                                 <p:inputMask value="" mask="9?99.999.999.999" slotChar="0" />
                             </h:panelGrid>
                         </p:panel>
@@ -43,7 +44,7 @@
     
                     <h:form id="machineForm">
                         <p:dialog header="Modal Dialog" widgetVar="dlg10" modal="true" height="100" resizable="false">
-                            <p:outputPanel id="dlgDetail" style="text-align:center;">   
+                            <p:outputPanel id="dlgDetail" style="text-align:center;">
                                 <p:outputLabel value="This is a Modal Dialog. #{mainBean.selectedMachine.id}" />
                             </p:outputPanel>
                         </p:dialog>

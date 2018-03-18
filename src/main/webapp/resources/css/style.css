@@ -1,42 +1,50 @@
 @charset "UTF-8";
 
-div #header {
-	margin: 5px;
-	position: absolute;
-	top: 0px;
-	height: 100px;
-    width: 90%;
-	background-color: #00FFFF;
+/* body { */
+/*     font: normal 12px Verdana, Arial, sans-serif; */
+/* } */
+
+.ui-widget, .ui-widget .ui-widget {
+    font: normal 12px Verdana, Arial, sans-serif;
 }
 
-div #left {
-    margin: 5px;
-    position: absolute;
-    top: 110px;
-    min-width: 500px;
-    max-width: 500px;
-    height: 80%;
-    background-color: #FF0000;
-}
+/* div #header { */
+/* 	margin: 5px; */
+/* 	position: absolute; */
+/* 	top: 0px; */
+/* 	height: 100px; */
+/*     width: 90%; */
+/* 	background-color: #00FFFF; */
+/* } */
 
-div #content {
-    margin: 5px;
-    position: absolute;
-    top: 110px;
-    left: 515px;
-    height: 50%;
-    width: 55%;
-    height: 80%;
-    background-color: #FFFF00;
-}
+/* div #left { */
+/*     margin: 5px; */
+/*     position: absolute; */
+/*     top: 110px; */
+/*     min-width: 500px; */
+/*     max-width: 500px; */
+/*     height: 80%; */
+/*     background-color: #FF0000; */
+/* } */
 
-.ui-icon-myCancel {
-    background-image: url("#{resource['icons/ic_delete_black_48dp_1x.png']}") !important;
-    width:48px !important;
-    height:48px !important;
-    position: absolute !important;
-    top: 0px !important;
-    left: 0px !important;
-    margin-left: 0px !important;
-    margin-top: 0px !important;
-}
+/* div #content { */
+/*     margin: 5px; */
+/*     position: absolute; */
+/*     top: 110px; */
+/*     left: 515px; */
+/*     height: 50%; */
+/*     width: 55%; */
+/*     height: 80%; */
+/*     background-color: #FFFF00; */
+/* } */
+
+/* .ui-icon-myCancel { */
+/*     background-image: url("#{resource['icons/ic_delete_black_48dp_1x.png']}") !important; */
+/*     width:48px !important; */
+/*     height:48px !important; */
+/*     position: absolute !important; */
+/*     top: 0px !important; */
+/*     left: 0px !important; */
+/*     margin-left: 0px !important; */
+/*     margin-top: 0px !important; */
+/* } */
