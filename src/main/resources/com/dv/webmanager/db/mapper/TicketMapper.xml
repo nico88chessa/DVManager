@@ -50,6 +50,11 @@
         <id column="LAST_UPDATE" property="lastUpdate" />
         <id column="IP" property="ip" />    
     </resultMap>
+    
+    <insert id="insertMachine" parameterType="Machine" useGeneratedKeys="true">
+        INSERT INTO MACHINE(NAME, LAST_UPDATE, IP)
+        VALUES (#{name}, #{lastUpdate}, #{ip})
+    </insert>
 
     <select id="selectTicket" resultMap="Ticket">
         SELECT * FROM PRINT_TICKET

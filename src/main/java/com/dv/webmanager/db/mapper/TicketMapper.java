@@ -11,5 +11,6 @@ public interface TicketMapper {
     
     public List<Machine> selectMachine();
 
+    public void insertMachine(Machine machine);
     
 }

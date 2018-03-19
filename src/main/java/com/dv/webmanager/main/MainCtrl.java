@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
+import com.dv.webmanager.db.bean.Machine;
+import com.dv.webmanager.db.mapper.TicketMapper;
 
 public class MainCtrl {
 
@@ -13,6 +15,17 @@ public class MainCtrl {
 
 //        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
 //        List<Machine> tickets = mapper.selectMachine();
+        
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+        
+        bean.setPageLoaded(true);
+        
+        Machine machine = new Machine();
+        machine.setIp("192.168.1.254");
+        machine.setLastUpdate(null);
+        machine.setName("prova");
+        
+        mapper.insertMachine(machine);
 
         bean.setShowDBManagement(false);
         bean.setShowUserManagement(false);
@@ -27,6 +40,12 @@ public class MainCtrl {
             machines.add(temp);
         }
         bean.setMachines(machines);
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 

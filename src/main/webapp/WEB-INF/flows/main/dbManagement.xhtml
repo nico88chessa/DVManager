@@ -10,39 +10,65 @@
 <h:body>
     
     <ui:composition template="/WEB-INF/layout/appLayout.xhtml">
+
     
         <ui:define name="content">
 
             <div id="divDBManagement">
             
-                <div id="buttonDiv">
+<!--                 <div id="buttonDiv"> -->
                     
-                    <h:form id="addMachineForm">
+<!--                     <h:form id="addMachineForm"> -->
                         
-                        <p:panel id="panelAddMachine">
-                            <h:panelGrid columns="2" cellpadding="10" columnClasses="ui-grid-col-2, ui-grid-col-4" style="width:100%">
-                                <f:facet name="header">
-                                    <p:outputLabel value="Aggiungi macchina" />
-                                </f:facet>
+<!--                         <p:panel id="panelAddMachine"> -->
+<!--                             <h:panelGrid columns="2" cellpadding="10" columnClasses="ui-grid-col-2, ui-grid-col-4" style="width:100%"> -->
+<!--                                 <f:facet name="header"> -->
+<!--                                     <p:outputLabel value="Aggiungi macchina" /> -->
+<!--                                 </f:facet> -->
 
-                                <p:outputLabel value="ID Macchina" />
-                                <p:inputMask value="" mask="9?99" slotChar=" " />
+<!--                                 <p:outputLabel value="ID Macchina" /> -->
+<!--                                 <p:inputMask value="" mask="9?99" slotChar=" " /> -->
                             
                             
-                                <p:outputLabel value="Indirizzo IP" />
-                                <p:inputMask value="" mask="9?99.999.999.999" slotChar="0" />
-                            </h:panelGrid>
-                        </p:panel>
+<!--                                 <p:outputLabel value="Indirizzo IP" /> -->
+<!--                                 <p:inputMask value="" mask="9?99.999.999.999" slotChar="0" /> -->
+<!--                             </h:panelGrid> -->
+<!--                         </p:panel> -->
                         
-                        <p:commandButton id="addMachineButton" value="Inserisci" />
+<!--                         <p:commandButton id="addMachineButton" value="Inserisci" /> -->
+<!--                     </h:form> -->
+                    
+<!--                 </div> -->
+                
+                    <h:form>
+                        <p:commandButton value="Inserisci macchine" icon="ui-icon-star" type="button" onclick="PF('dlgInserisciMacchina').show();" />
+                        
+                        <p:dialog header="Inserisci macchina" widgetVar="dlgInserisciMacchina" modal="true" height="500" width="500">
+                            <p:panel id="panelAddMachine">
+                                <h:panelGrid columns="2" cellpadding="10" columnClasses="ui-grid-col-2, ui-grid-col-4" style="width:100%">
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Inserisci macchina" />
+                                    </f:facet>
+        
+                                    <p:outputLabel value="ID Macchina" />
+                                    <p:inputMask value="" mask="9?99" slotChar=" " />
+                                
+                                    <p:outputLabel value="Indirizzo IP" />
+                                    <p:inputMask value="" mask="9?99.999.999.999" slotChar="0" />
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:dialog>
+                    </h:form> 
+                    
+                
+                
+                <div id="machinesDiv" class="ui-g">
+                    <h:form id="startup">    
+                        <p:remoteCommand id="rcShowMachineList" actionListener="#{mainCtrl.init}" update="machineForm" autoRun="#{not mainBean.pageLoaded}" />
                     </h:form>
                     
-                </div>
-            
-                
-                <div id="machinesDiv">
-    
                     <h:form id="machineForm">
+                        
                         <p:dialog header="Modal Dialog" widgetVar="dlg10" modal="true" height="100" resizable="false">
                             <p:outputPanel id="dlgDetail" style="text-align:center;">
                                 <p:outputLabel value="This is a Modal Dialog. #{mainBean.selectedMachine.id}" />

@@ -11,6 +11,7 @@ public class MainBean {
     private boolean showDBData;
     private List<MainBean.Machine> machines;
     private MainBean.Machine selectedMachine;
+    private boolean pageLoaded;
     
 
     
@@ -62,6 +63,14 @@ public class MainBean {
     public void setSelectedMachine(MainBean.Machine selectedMachine) {
         this.selectedMachine = selectedMachine;
         System.out.println("setSelectedMachine called...");
+    }
+
+    public boolean isPageLoaded() {
+        return pageLoaded;
+    }
+
+    public void setPageLoaded(boolean pageLoaded) {
+        this.pageLoaded = pageLoaded;
     }
 
 
