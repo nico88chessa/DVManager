@@ -12,9 +12,9 @@ public class MainBean {
     private List<MainBean.Machine> machines;
     private MainBean.Machine selectedMachine;
     private boolean pageLoaded;
-    
 
-    
+    private String newMachineName;
+    private String newMachineIP;
 
     public boolean isShowDBData() {
         return showDBData;
@@ -27,23 +27,23 @@ public class MainBean {
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public boolean isShowDBManagement() {
         return showDBManagement;
     }
-    
+
     public void setShowDBManagement(boolean showDBManagement) {
         this.showDBManagement = showDBManagement;
     }
-    
+
     public boolean isShowUserManagement() {
         return showUserManagement;
     }
-    
+
     public void setShowUserManagement(boolean showUserManagement) {
         this.showUserManagement = showUserManagement;
     }
@@ -51,11 +51,11 @@ public class MainBean {
     public List<MainBean.Machine> getMachines() {
         return machines;
     }
-    
+
     public void setMachines(List<MainBean.Machine> machines) {
         this.machines = machines;
     }
-    
+
     public MainBean.Machine getSelectedMachine() {
         return selectedMachine;
     }
@@ -73,39 +73,55 @@ public class MainBean {
         this.pageLoaded = pageLoaded;
     }
 
+    public String getNewMachineName() {
+        return newMachineName;
+    }
+
+    public void setNewMachineName(String newMachineName) {
+        this.newMachineName = newMachineName;
+    }
+
+    public String getNewMachineIP() {
+        return newMachineIP;
+    }
+
+    public void setNewMachineIP(String newMachineIP) {
+        this.newMachineIP = newMachineIP;
+    }
+
 
 
     public static class Machine {
-        
+
         private int id;
         private String ip;
         private Date lastUpdate;
-        
+
         public int getId() {
             return id;
         }
-        
+
         public void setId(int id) {
             this.id = id;
         }
-        
+
         public String getIp() {
             return ip;
         }
-        
+
         public void setIp(String ip) {
             this.ip = ip;
         }
-        
+
         public Date getLastUpdate() {
             return lastUpdate;
         }
-        
+
         public void setLastUpdate(Date lastUpdate) {
             this.lastUpdate = lastUpdate;
         }
-        
+
     }
 
-    
+
 }

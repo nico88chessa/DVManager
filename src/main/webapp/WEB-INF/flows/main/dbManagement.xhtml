@@ -9,115 +9,111 @@
 
 <h:body>
     
-    <ui:composition template="/WEB-INF/layout/appLayout.xhtml">
+<ui:composition template="/WEB-INF/layout/appLayout.xhtml">
 
-    
-        <ui:define name="content">
+    <ui:define name="content">
 
-            <div id="divDBManagement">
-            
-<!--                 <div id="buttonDiv"> -->
-                    
-<!--                     <h:form id="addMachineForm"> -->
-                        
-<!--                         <p:panel id="panelAddMachine"> -->
-<!--                             <h:panelGrid columns="2" cellpadding="10" columnClasses="ui-grid-col-2, ui-grid-col-4" style="width:100%"> -->
-<!--                                 <f:facet name="header"> -->
-<!--                                     <p:outputLabel value="Aggiungi macchina" /> -->
-<!--                                 </f:facet> -->
-
-<!--                                 <p:outputLabel value="ID Macchina" /> -->
-<!--                                 <p:inputMask value="" mask="9?99" slotChar=" " /> -->
-                            
-                            
-<!--                                 <p:outputLabel value="Indirizzo IP" /> -->
-<!--                                 <p:inputMask value="" mask="9?99.999.999.999" slotChar="0" /> -->
-<!--                             </h:panelGrid> -->
-<!--                         </p:panel> -->
-                        
-<!--                         <p:commandButton id="addMachineButton" value="Inserisci" /> -->
-<!--                     </h:form> -->
-                    
-<!--                 </div> -->
-                
-                    <h:form>
-                        <p:commandButton value="Inserisci macchine" icon="ui-icon-star" type="button" onclick="PF('dlgInserisciMacchina').show();" />
-                        
-                        <p:dialog header="Inserisci macchina" widgetVar="dlgInserisciMacchina" modal="true" height="500" width="500">
-                            <p:panel id="panelAddMachine">
-                                <h:panelGrid columns="2" cellpadding="10" columnClasses="ui-grid-col-2, ui-grid-col-4" style="width:100%">
-                                    <f:facet name="header">
-                                        <p:outputLabel value="Inserisci macchina" />
-                                    </f:facet>
+        <div id="divDBManagement">
         
-                                    <p:outputLabel value="ID Macchina" />
-                                    <p:inputMask value="" mask="9?99" slotChar=" " />
+            <!-- qui visualizzo il pulsante per aggiungere una nuova macchina -->
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <h:form>
+                        <p:commandButton id="inserisciMacchinaCB" widgetVar="inserisciMacchinaCB"
+                            value="Inserisci macchine" icon="ui-icon-star" type="button" onclick="PF('inserisciMacchinaDlg').show();" />
+                        
+                        <p:dialog id="inserisciMacchinaDlg" widgetVar="inserisciMacchinaDlg"
+                            header="Inserisci macchina" modal="true" height="200" width="500" minHeight="200" minWidth="400">
+                            
+                            <div class="ui-g">
                                 
+                                <div class="ui-g-6">
                                     <p:outputLabel value="Indirizzo IP" />
-                                    <p:inputMask value="" mask="9?99.999.999.999" slotChar="0" />
-                                </h:panelGrid>
-                            </p:panel>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask id="ipIM" widgetVar="ipIM" mask="9?99.999.999.999" slotChar="0"
+                                        value="#{mainBean.newMachineIP}"/>
+                                </div>
+                                
+                                <div class="ui-g-6" style="width=10px">
+                                    <p:outputLabel value="Nome macchina" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask id="nomeMacchinaIM" widgetVar="nomeMacchinaIM" slotChar=" "
+                                        value="#{mainBean.newMachineName}"/>
+                                </div>
+                                
+                                <div class="ui-g-2">
+                                    <p:commandButton id="confermaInserimentoCB" widgetVar="confermaInserimentoCB" value="Inserisci"
+                                        onclick="PF('inserisciMacchinaDlg').hide()" actionListener="#{mainCtrl.addNewMachineToDB()}" />
+                                </div>
+                                <div class="ui-g-2">
+                                    <p:commandButton id="annullaInserimentoCB" widgetVar="annullaInserimentoCB" value="Annulla"
+                                        onclick="PF('inserisciMacchinaDlg').hide()" />
+                                </div>
+                                <div class="ui-g-8"/>
+                            
+                            </div>
+    
                         </p:dialog>
                     </h:form> 
-                    
-                
-                
-                <div id="machinesDiv" class="ui-g">
-                    <h:form id="startup">    
-                        <p:remoteCommand id="rcShowMachineList" actionListener="#{mainCtrl.init}" update="machineForm" autoRun="#{not mainBean.pageLoaded}" />
-                    </h:form>
-                    
-                    <h:form id="machineForm">
-                        
-                        <p:dialog header="Modal Dialog" widgetVar="dlg10" modal="true" height="100" resizable="false">
-                            <p:outputPanel id="dlgDetail" style="text-align:center;">
-                                <p:outputLabel value="This is a Modal Dialog. #{mainBean.selectedMachine.id}" />
-                            </p:outputPanel>
-                        </p:dialog>
-                        
-                        <p:growl id="dbGrowl" showDetail="true" />
-                        <p:outputLabel value="#{mainBean.name}" />
-                        <p:dataTable id="machines" value="#{mainBean.machines}" var="item" editable="true">
-                            <p:column headerText="ID">
-                                <p:outputLabel value="#{item.id}" />
-                            </p:column>
-                            <p:column headerText="Indirizzo IP">
-                                <p:outputLabel value="#{item.ip}" />
-                            </p:column>
-                            <p:column headerText="Ultimo aggiornamento">
-                                <p:outputLabel value="#{item.lastUpdate}" />
-                            </p:column>
-                            <p:column>
-                                <p:commandButton value="Modal - #{item.id}" update=":machineForm:dlgDetail" oncomplete="PF('dlg10').show()">
-                                    <f:setPropertyActionListener value="#{item}" target="#{mainBean.selectedMachine}" />
-                                </p:commandButton>
-                            </p:column>
-                            <p:column>
-                                <p:commandButton icon="ui-icon-myCancel" update=":machineForm:dlgDetail" oncomplete="PF('dlg10').show()" style="width:48px; height:48px"
-                                    iconPos="left">
-                                    <f:setPropertyActionListener value="#{item}" target="#{mainBean.selectedMachine}" />
-                                </p:commandButton>
-                            </p:column>
-                            
-                            
-<!--                             <p:column style="width:32px;text-align: center"> -->
-<!--                                 <p:commandButton update=":machineForm:dlgDetail" oncomplete="PF('dlg10').show()" icon="ui-icon-search" title="View"> -->
-<!--                                     <f:setPropertyActionListener value="#{item}" target="#{mainBean.selectedMachine}" /> -->
-<!--                                 </p:commandButton> -->
-<!--                             </p:column> -->
-                            
-                        </p:dataTable>
-
-
-                    </h:form>
-                
                 </div>
             
-            </div>
-
-        </ui:define>
+                <!-- questa e' la tabella di visualizzazione dei dati -->
+                <div class="ui-g-12">
+                    
+                    <div id="machinesDiv" class="ui-g">
+                        <h:form id="startup">
+                            <p:remoteCommand id="rcShowMachineList" actionListener="#{mainCtrl.init}" update="machineForm" autoRun="#{not mainBean.pageLoaded}" />
+                        </h:form>
+                        
+                        <h:form id="machineForm">
+                            
+                            <p:dialog header="Modal Dialog" widgetVar="dlg10" modal="true" height="100" resizable="false">
+                                <p:outputPanel id="dlgDetail" style="text-align:center;">
+                                    <p:outputLabel value="This is a Modal Dialog. #{mainBean.selectedMachine.id}" />
+                                </p:outputPanel>
+                            </p:dialog>
+                            
+                            <p:growl id="dbGrowl" showDetail="true" />
+                            <p:outputLabel value="#{mainBean.name}" />
+                            <p:dataTable id="machines" value="#{mainBean.machines}" var="item" editable="true">
+                                <p:column headerText="ID">
+                                    <p:outputLabel value="#{item.id}" />
+                                </p:column>
+                                <p:column headerText="Indirizzo IP">
+                                    <p:outputLabel value="#{item.ip}" />
+                                </p:column>
+                                <p:column headerText="Ultimo aggiornamento">
+                                    <p:outputLabel value="#{item.lastUpdate}" />
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton value="Modal - #{item.id}" update=":machineForm:dlgDetail" oncomplete="PF('dlg10').show()">
+                                        <f:setPropertyActionListener value="#{item}" target="#{mainBean.selectedMachine}" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton icon="ui-icon-myCancel" update=":machineForm:dlgDetail" oncomplete="PF('dlg10').show()" style="width:48px; height:48px"
+                                        iconPos="left">
+                                        <f:setPropertyActionListener value="#{item}" target="#{mainBean.selectedMachine}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
     
-    </ui:composition>
+                        </h:form>
+                    
+                    </div>
+
+                </div>
+
+                
+            </div>
+        
+        </div>
+
+    </ui:define>
+
+</ui:composition>
 
 </h:body>
 

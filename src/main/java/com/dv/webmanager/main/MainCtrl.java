@@ -15,16 +15,16 @@ public class MainCtrl {
 
 //        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
 //        List<Machine> tickets = mapper.selectMachine();
-        
+
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
-        
+
         bean.setPageLoaded(true);
-        
+
         Machine machine = new Machine();
         machine.setIp("192.168.1.254");
         machine.setLastUpdate(null);
         machine.setName("prova");
-        
+
         mapper.insertMachine(machine);
 
         bean.setShowDBManagement(false);
@@ -46,6 +46,17 @@ public class MainCtrl {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+    }
+
+    public void addNewMachineToDB() {
+
+        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+
+        String name = bean.getName();
+        System.out.print(name);
+
+        // inserire la macchine nel DB
 
     }
 
