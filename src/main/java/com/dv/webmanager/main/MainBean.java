@@ -1,127 +1,58 @@
+
 package com.dv.webmanager.main;
 
-import java.util.Date;
 import java.util.List;
 
+import com.dv.webmanager.db.bean.Machine;
+
 public class MainBean {
+    
+    public static final String globalGrowId = "globalGrow";
+    public static int ipPingTimes = 4;
 
-    private String name;
-    private boolean showDBManagement;
-    private boolean showUserManagement;
-    private boolean showDBData;
-    private List<MainBean.Machine> machines;
-    private MainBean.Machine selectedMachine;
-    private boolean pageLoaded;
-
-    private String newMachineName;
-    private String newMachineIP;
-
-    public boolean isShowDBData() {
-        return showDBData;
-    }
-
-    public void setShowDBData(boolean showDBData) {
-        this.showDBData = showDBData;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isShowDBManagement() {
-        return showDBManagement;
-    }
-
-    public void setShowDBManagement(boolean showDBManagement) {
-        this.showDBManagement = showDBManagement;
-    }
-
-    public boolean isShowUserManagement() {
-        return showUserManagement;
-    }
-
-    public void setShowUserManagement(boolean showUserManagement) {
-        this.showUserManagement = showUserManagement;
-    }
-
-    public List<MainBean.Machine> getMachines() {
+    private List<Machine> machines;
+    private Machine newMachine;
+    private Machine selectedMachine;
+    
+    private String ipCommandResult;
+    private int ipPingCounter;
+    private boolean pingStop;
+    
+    public List<Machine> getMachines() {
         return machines;
     }
-
-    public void setMachines(List<MainBean.Machine> machines) {
+    public void setMachines(List<Machine> machines) {
         this.machines = machines;
     }
-
-    public MainBean.Machine getSelectedMachine() {
+    public Machine getNewMachine() {
+        return newMachine;
+    }
+    public void setNewMachine(Machine newMachine) {
+        this.newMachine = newMachine;
+    }
+    public Machine getSelectedMachine() {
         return selectedMachine;
     }
-
-    public void setSelectedMachine(MainBean.Machine selectedMachine) {
+    public void setSelectedMachine(Machine selectedMachine) {
         this.selectedMachine = selectedMachine;
-        System.out.println("setSelectedMachine called...");
     }
-
-    public boolean isPageLoaded() {
-        return pageLoaded;
+    public String getIpCommandResult() {
+        return ipCommandResult;
     }
-
-    public void setPageLoaded(boolean pageLoaded) {
-        this.pageLoaded = pageLoaded;
+    public void setIpCommandResult(String ipCommandResult) {
+        this.ipCommandResult = ipCommandResult;
     }
-
-    public String getNewMachineName() {
-        return newMachineName;
+    public int getIpPingCounter() {
+        return ipPingCounter;
     }
-
-    public void setNewMachineName(String newMachineName) {
-        this.newMachineName = newMachineName;
+    public void setIpPingCounter(int ipPingCounter) {
+        this.ipPingCounter = ipPingCounter;
     }
-
-    public String getNewMachineIP() {
-        return newMachineIP;
+    public boolean getPingStop() {
+        return pingStop;
     }
-
-    public void setNewMachineIP(String newMachineIP) {
-        this.newMachineIP = newMachineIP;
+    public void setPingStop(boolean pingStop) {
+        this.pingStop = pingStop;
     }
-
-
-
-    public static class Machine {
-
-        private int id;
-        private String ip;
-        private Date lastUpdate;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getIp() {
-            return ip;
-        }
-
-        public void setIp(String ip) {
-            this.ip = ip;
-        }
-
-        public Date getLastUpdate() {
-            return lastUpdate;
-        }
-
-        public void setLastUpdate(Date lastUpdate) {
-            this.lastUpdate = lastUpdate;
-        }
-
-    }
-
 
 }

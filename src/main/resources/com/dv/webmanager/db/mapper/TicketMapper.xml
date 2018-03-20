@@ -63,5 +63,10 @@
     <select id="selectMachine" resultMap="Machine">
         SELECT * FROM MACHINE
     </select>
+    
+    <delete id="deleteMachine" parameterType="Machine" flushCache="true">
+        DELETE FROM MACHINE
+        WHERE MACHINE.ID = #{id}
+    </delete>
 
 </mapper>

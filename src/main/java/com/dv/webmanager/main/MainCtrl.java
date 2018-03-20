@@ -1,51 +1,27 @@
 package com.dv.webmanager.main;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import org.mybatis.spring.MyBatisSystemException;
 
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
 import com.dv.webmanager.db.bean.Machine;
 import com.dv.webmanager.db.mapper.TicketMapper;
 
 public class MainCtrl {
-
+    
     public void init() {
-
+        
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-
-//        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
-//        List<Machine> tickets = mapper.selectMachine();
-
-        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
-
-        bean.setPageLoaded(true);
-
-        Machine machine = new Machine();
-        machine.setIp("192.168.1.254");
-        machine.setLastUpdate(null);
-        machine.setName("prova");
-
-        mapper.insertMachine(machine);
-
-        bean.setShowDBManagement(false);
-        bean.setShowUserManagement(false);
-        bean.setShowDBData(true);
-
-        List<MainBean.Machine> machines = new ArrayList<MainBean.Machine>();
-        for (int i=0; i<20; i++) {
-            MainBean.Machine temp = new MainBean.Machine();
-            temp.setId(i+1);
-            temp.setIp("192.168.1."+(i+1));
-            temp.setLastUpdate(new java.util.Date());
-            machines.add(temp);
-        }
-        bean.setMachines(machines);
-        try {
-            Thread.sleep(5);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        bean.setNewMachine(new Machine());
+        bean.setIpCommandResult(new String());
+        this.updateMachineList();
 
     }
 
@@ -53,41 +29,112 @@ public class MainCtrl {
 
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
 
-        String name = bean.getName();
-        System.out.print(name);
+        Machine newMachine = new Machine();
+        newMachine.setName(bean.getNewMachine().getName());
+        newMachine.setIp(bean.getNewMachine().getIp());
+        newMachine.setLastUpdate(null);
+        
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+        try {
+            mapper.insertMachine(newMachine);
+        } catch (MyBatisSystemException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
+            return;
+        }
 
-        // inserire la macchine nel DB
-
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina inserita correttamente.", "") );
+        
+        this.updateMachineList();
+        
     }
+    
+    public void updateMachineList() {
 
-    public void showDBManagement() {
-
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+        List<Machine> machines = null;
+        try {
+            machines = mapper.selectMachine();
+        } catch (MyBatisSystemException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
+            return;
+        }
+        
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-
-        bean.setShowDBManagement(true);
-        bean.setShowUserManagement(false);
-        bean.setShowDBData(false);
-
+        bean.setMachines(machines);
+        
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void showUserManagement() {
-
+    
+    public void deleteMachineFromDB() {
+        
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-
-        bean.setShowDBManagement(false);
-        bean.setShowUserManagement(true);
-        bean.setShowDBData(false);
-
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+        try { 
+            mapper.deleteMachine(bean.getSelectedMachine());
+        } catch (MyBatisSystemException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
+            return;
+        }
+        
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina eliminata correttamente.", "") );
+        
+        this.updateMachineList();
+        
     }
-
-    public void showDBData() {
-
+    
+    public void clearNewMachineValues() {
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+        bean.setNewMachine(new Machine());
+    }
+    
+    public void resetIpPingCounter() {
+        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+        bean.setIpPingCounter(MainBean.ipPingTimes);
+        bean.setIpCommandResult("");
+    }
+    
+    public void decrementIpPingCounter() {
+        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+        bean.setIpPingCounter(bean.getIpPingCounter()-1);
+        if (bean.getIpPingCounter() == 0)
+            bean.setPingStop(true);
+    }
+    
+    public void pingMachine() {
+        
+        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+        bean.setPingStop(false);
+        
+        String pingCmd = "ping -c1 " + bean.getSelectedMachine().getIp();
+        
+        try {
+            Runtime r = Runtime.getRuntime();
+            Process p = r.exec(pingCmd);
 
-        bean.setShowDBManagement(false);
-        bean.setShowUserManagement(false);
-        bean.setShowDBData(true);
+            BufferedReader in = new BufferedReader(new
+            InputStreamReader(p.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null)
+                bean.setIpCommandResult(bean.getIpCommandResult()+inputLine);
+            in.close();
+            
+            bean.setIpCommandResult(bean.getIpCommandResult()+"\n\n");
+            this.decrementIpPingCounter();
 
+        } catch (IOException e) {
+            bean.setIpPingCounter(0);
+            System.out.println(e);
+        }
+        
     }
 
 }
