@@ -15,9 +15,9 @@ import com.dv.webmanager.db.bean.Machine;
 import com.dv.webmanager.db.mapper.TicketMapper;
 
 public class MainCtrl {
-    
+
     public void init() {
-        
+
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
         bean.setNewMachine(new Machine());
         bean.setIpCommandResult(new String());
@@ -33,7 +33,7 @@ public class MainCtrl {
         newMachine.setName(bean.getNewMachine().getName());
         newMachine.setIp(bean.getNewMachine().getIp());
         newMachine.setLastUpdate(null);
-        
+
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
         try {
             mapper.insertMachine(newMachine);
@@ -45,11 +45,11 @@ public class MainCtrl {
 
         FacesContext fc = FacesContext.getCurrentInstance();
         fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina inserita correttamente.", "") );
-        
+
         this.updateMachineList();
-        
+
     }
-    
+
     public void updateMachineList() {
 
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
@@ -61,64 +61,51 @@ public class MainCtrl {
             fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
             return;
         }
-        
+
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
         bean.setMachines(machines);
-        
+
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteMachineFromDB() {
-        
+
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
-        try { 
+        try {
             mapper.deleteMachine(bean.getSelectedMachine());
         } catch (MyBatisSystemException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
             return;
         }
-        
+
         FacesContext fc = FacesContext.getCurrentInstance();
         fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina eliminata correttamente.", "") );
-        
+
         this.updateMachineList();
-        
+
     }
-    
+
     public void clearNewMachineValues() {
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
         bean.setNewMachine(new Machine());
     }
-    
-    public void resetIpPingCounter() {
-        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        bean.setIpPingCounter(MainBean.ipPingTimes);
-        bean.setIpCommandResult("");
-    }
-    
-    public void decrementIpPingCounter() {
-        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        bean.setIpPingCounter(bean.getIpPingCounter()-1);
-        if (bean.getIpPingCounter() == 0)
-            bean.setPingStop(true);
-    }
-    
+
     public void pingMachine() {
-        
+
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        bean.setPingStop(false);
-        
-        String pingCmd = "ping -c1 " + bean.getSelectedMachine().getIp();
-        
+        bean.setIpCommandResult("");
+
+        String pingCmd = "ping -c4 " + bean.getSelectedMachine().getIp();
+
         try {
-            Runtime r = Runtime.getRuntime();
-            Process p = r.exec(pingCmd);
+
+            Process p = Runtime.getRuntime().exec(pingCmd);
 
             BufferedReader in = new BufferedReader(new
             InputStreamReader(p.getInputStream()));
@@ -126,15 +113,14 @@ public class MainCtrl {
             while ((inputLine = in.readLine()) != null)
                 bean.setIpCommandResult(bean.getIpCommandResult()+inputLine);
             in.close();
-            
-            bean.setIpCommandResult(bean.getIpCommandResult()+"\n\n");
-            this.decrementIpPingCounter();
 
-        } catch (IOException e) {
-            bean.setIpPingCounter(0);
-            System.out.println(e);
+            bean.setIpCommandResult(bean.getIpCommandResult()+"\n\n");
+
+        } catch (IOException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
         }
-        
+
     }
 
 }

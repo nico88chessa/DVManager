@@ -15,79 +15,82 @@
 
         <div id="divDBManagement">
         
-            <!-- qui visualizzo il pulsante per aggiungere una nuova macchina -->
             <div class="ui-g">
+            
+            
+            
+                <!-- qui visualizzo il pulsante per aggiungere una nuova macchina -->
                 <div class="ui-g-12">
                     <h:form id="newMachineForm">
-                            <p:commandButton id="inserisciMacchinaCB"
-                                widgetVar="inserisciMacchinaCB"
-                                value="Inserisci macchine"
-                                icon="ui-icon-star"
-                                actionListener="#{mainCtrl.clearNewMachineValues()}"
-                                oncomplete="PF('inserisciMacchinaDlg').show()"
-                                update=":newMachineForm:inserisciMacchinaDlg" />
+                        <p:commandButton id="inserisciMacchinaCB"
+                            widgetVar="inserisciMacchinaCB"
+                            value="Inserisci macchine"
+                            icon="ui-icon-star"
+                            actionListener="#{mainCtrl.clearNewMachineValues()}"
+                            oncomplete="PF('inserisciMacchinaDlg').show()"
+                            update=":newMachineForm:inserisciMacchinaDlg" />
 
-                            <p:dialog id="inserisciMacchinaDlg"
-                                widgetVar="inserisciMacchinaDlg"
-                                header="Inserisci macchina" modal="true"
-                                height="200" width="500" minHeight="200"
-                                minWidth="400">
+                        <p:dialog id="inserisciMacchinaDlg"
+                            widgetVar="inserisciMacchinaDlg"
+                            header="Inserisci macchina" modal="true"
+                            height="200" width="500" minHeight="200"
+                            minWidth="400">
 
-                                <!--                             <p:ajax event="open" listener="#{mainCtrl.clearNewMachineValues()}"/> -->
+                            <div class="ui-g">
 
-                                <div class="ui-g">
-
-                                    <div class="ui-g-6" style="">
-                                        <p:outputLabel
-                                            value="Nome macchina" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:inputMask id="nomeMacchinaIM"
-                                            widgetVar="nomeMacchinaIM"
-                                            slotChar=" "
-                                            value="#{mainBean.newMachine.name}" />
-                                    </div>
-
-                                    <div class="ui-g-6">
-                                        <p:outputLabel
-                                            value="Indirizzo IP" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:inputMask id="ipIM"
-                                            widgetVar="ipIM"
-                                            mask="9?99.999.999.999"
-                                            slotChar="0"
-                                            value="#{mainBean.newMachine.ip}" />
-                                    </div>
-
-                                    <f:facet name="footer">
-                                        <div class="ui-g-8" />
-
-                                        <div class="ui-g-2">
-                                            <p:commandButton
-                                                id="confermaInserimentoCB"
-                                                widgetVar="confermaInserimentoCB"
-                                                value="Inserisci"
-                                                onclick="PF('inserisciMacchinaDlg').hide()"
-                                                actionListener="#{mainCtrl.addNewMachineToDB()}"
-                                                update="globalGrow, :machineForm:machines" />
-                                        </div>
-
-                                        <div class="ui-g-2">
-                                            <p:commandButton
-                                                id="annullaInserimentoCB"
-                                                widgetVar="annullaInserimentoCB"
-                                                value="Annulla"
-                                                onclick="PF('inserisciMacchinaDlg').hide()" />
-                                        </div>
-
-                                    </f:facet>
-
+                                <div class="ui-g-6" style="">
+                                    <p:outputLabel
+                                        value="Nome macchina" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask id="nomeMacchinaIM"
+                                        widgetVar="nomeMacchinaIM"
+                                        slotChar=" "
+                                        value="#{mainBean.newMachine.name}" />
                                 </div>
 
-                            </p:dialog>
-                        </h:form> 
+                                <div class="ui-g-6">
+                                    <p:outputLabel
+                                        value="Indirizzo IP" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask id="ipIM"
+                                        widgetVar="ipIM"
+                                        mask="9?99.999.999.999"
+                                        slotChar="0"
+                                        value="#{mainBean.newMachine.ip}" />
+                                </div>
+
+                                <f:facet name="footer">
+                                    <div class="ui-g-8" />
+
+                                    <div class="ui-g-2">
+                                        <p:commandButton
+                                            id="confermaInserimentoCB"
+                                            widgetVar="confermaInserimentoCB"
+                                            value="Inserisci"
+                                            onclick="PF('inserisciMacchinaDlg').hide()"
+                                            actionListener="#{mainCtrl.addNewMachineToDB()}"
+                                            update="globalGrow, :machineForm:machines" />
+                                    </div>
+
+                                    <div class="ui-g-2">
+                                        <p:commandButton
+                                            id="annullaInserimentoCB"
+                                            widgetVar="annullaInserimentoCB"
+                                            value="Annulla"
+                                            onclick="PF('inserisciMacchinaDlg').hide()" />
+                                    </div>
+
+                                </f:facet>
+
+                            </div>
+
+                        </p:dialog>
+                    </h:form> 
                 </div>
+                
+                
             
                 <!-- questa e' la tabella di visualizzazione dei dati -->
                 <div class="ui-g-12">
@@ -99,7 +102,7 @@
                         </h:form>
                         
                         <h:form id="machineForm">
-                            
+                        
                             <!-- tabella valori -->
                             <p:dataTable id="machines" value="#{mainBean.machines}" var="item" editable="true">
                                 <p:column headerText="Nome">
@@ -117,7 +120,7 @@
                                 <p:column>
                                         <p:commandButton
                                             update=":machineForm:deleteMachineDlg"
-                                            icon="ui-icon-myCancel"
+                                            icon="ui-icon-cancel"
                                             oncomplete="PF('deleteMachineDlg').show()">
                                             <f:setPropertyActionListener
                                                 value="#{item}"
@@ -125,101 +128,95 @@
                                         </p:commandButton>
                                     </p:column>
                                 <p:column>
-                                        <p:commandButton
-                                            icon="ui-icon-myCancel"
-                                            actionListener="#{mainCtrl.resetIpPingCounter}"
-                                            oncomplete="PF('ipPingPll').start()" >
-<!--                                             update=":machineForm:ipPingPll"> -->
-                                            <f:setPropertyActionListener
-                                                value="#{item}"
-                                                target="#{mainBean.selectedMachine}" />
-                                        </p:commandButton>
-                                    </p:column>
+                                    <p:commandButton
+                                        icon="ui-icon-ping"
+                                        global="false"
+                                        oncomplete="callIP()" >
+                                        <f:setPropertyActionListener
+                                            value="#{item}"
+                                            target="#{mainBean.selectedMachine}" />
+                                    </p:commandButton>
+                                </p:column>
                             </p:dataTable>
 
 
                             <!-- finestra dialogo per cancellazione macchina -->
-                                <p:dialog widgetVar="deleteMachineDlg"
-                                    id="deleteMachineDlg" modal="true"
-                                    width="500" height="200"
-                                    resizable="false"
-                                    rendered="#{not empty mainBean.selectedMachine}">
+                            <p:dialog widgetVar="deleteMachineDlg"
+                                id="deleteMachineDlg" modal="true"
+                                width="500" height="200"
+                                resizable="false"
+                                rendered="#{not empty mainBean.selectedMachine}">
 
-                                    <div class="ui-g-12">
-                                        <p:outputLabel
-                                            value="Confermi di voler eliminare la macchina?" />
+                                <div class="ui-g-12">
+                                    <p:outputLabel
+                                        value="Confermi di voler eliminare la macchina?" />
+                                </div>
+
+                                <div class="ui-g-6" style="">
+                                    <p:outputLabel
+                                        value="Nome macchina" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask id="nomeMacchinaIM"
+                                        widgetVar="nomeMacchinaIM"
+                                        slotChar=" " readonly="true"
+                                        value="#{mainBean.selectedMachine.name}" />
+                                </div>
+
+                                <div class="ui-g-6">
+                                    <p:outputLabel
+                                        value="Indirizzo IP" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask id="ipIM"
+                                        widgetVar="ipIM"
+                                        mask="9?99.999.999.999"
+                                        slotChar="0" readonly="true"
+                                        value="#{mainBean.selectedMachine.ip}" />
+                                </div>
+
+                                <f:facet name="footer">
+                                    <div class="ui-g-4" />
+
+                                    <div class="ui-g-4">
+                                        <p:commandButton
+                                            id="confermaDeleteCB"
+                                            widgetVar="confermaDeleteCB"
+                                            value="Elimina"
+                                            onclick="PF('deleteMachineDlg').hide()"
+                                            actionListener="#{mainCtrl.deleteMachineFromDB()}"
+                                            update="globalGrow, :machineForm:machines" />
                                     </div>
 
-                                    <div class="ui-g-6" style="">
-                                        <p:outputLabel
-                                            value="Nome macchina" />
+                                    <div class="ui-g-4">
+                                        <p:commandButton
+                                            id="annullaDeleteCB"
+                                            widgetVar="annullaDeleteCB"
+                                            value="Annulla"
+                                            onclick="PF('deleteMachineDlg').hide()" />
                                     </div>
-                                    <div class="ui-g-6">
-                                        <p:inputMask id="nomeMacchinaIM"
-                                            widgetVar="nomeMacchinaIM"
-                                            slotChar=" " readonly="true"
-                                            value="#{mainBean.selectedMachine.name}" />
-                                    </div>
+                                </f:facet>
+                            </p:dialog>
 
-                                    <div class="ui-g-6">
-                                        <p:outputLabel
-                                            value="Indirizzo IP" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:inputMask id="ipIM"
-                                            widgetVar="ipIM"
-                                            mask="9?99.999.999.999"
-                                            slotChar="0" readonly="true"
-                                            value="#{mainBean.selectedMachine.ip}" />
-                                    </div>
+                            <!-- finestra dialogo per comando di ping -->
+                            <p:dialog id="ipDlg" widgetVar="ipDlg"
+                                modal="true" resizable="true"
+                                visible="false" width="540"
+                                height="500">
 
-                                    <f:facet name="footer">
-                                        <div class="ui-g-4" />
+                                <p:inputTextarea id="ipITA"
+                                    widgetVar="ipITA"
+                                    value="#{mainBean.ipCommandResult}"
+                                    readonly="true"
+                                    styleClass="ipItaStyle" />
 
-                                        <div class="ui-g-4">
-                                            <p:commandButton
-                                                id="confermaDeleteCB"
-                                                widgetVar="confermaDeleteCB"
-                                                value="Elimina"
-                                                onclick="PF('deleteMachineDlg').hide()"
-                                                actionListener="#{mainCtrl.deleteMachineFromDB()}"
-                                                update="globalGrow, :machineForm:machines" />
-                                        </div>
+                            </p:dialog>
 
-                                        <div class="ui-g-4">
-                                            <p:commandButton
-                                                id="annullaDeleteCB"
-                                                widgetVar="annullaDeleteCB"
-                                                value="Annulla"
-                                                onclick="PF('deleteMachineDlg').hide()" />
-                                        </div>
-                                    </f:facet>
-                                </p:dialog>
+                            <p:remoteCommand name="callIP" actionListener="#{mainCtrl.pingMachine}"
+                                update="machineForm:ipDlg" oncomplete="PF('ipDlg').show()" />
 
-                                <!-- finestra dialogo per comando di ping -->
-                                <p:dialog id="ipDlg" widgetVar="ipDlg"
-                                    modal="true" resizable="true"
-                                    visible="false" width="540"
-                                    height="500">
 
-                                    <p:inputTextarea id="ipITA"
-                                        widgetVar="ipITA"
-                                        value="#{mainBean.ipCommandResult}"
-                                        readonly="true"
-                                        styleClass="ipItaStyle" />
-
-                                </p:dialog>
-
-                                <p:poll id="ipPingPll"
-                                    widgetVar="ipPingPll"
-                                    interval="2"
-                                    listener="#{mainCtrl.pingMachine}"
-                                    update=":machineForm:ipITA"
-                                    autoStart="false"
-                                    stop="#{mainBean.pingStop}"
-                                    onstart="PF('ipDlg').show()" />
-
-                            </h:form>
+                        </h:form>
                     
                     </div>
 
