@@ -8,15 +8,105 @@
 
 <h:body>
 
+
     <ui:composition template="/WEB-INF/layout/appLayout.xhtml">
 
         <ui:define name="content">
 
             <div id="divDBData">
 
-                <p:panel id="panelDBData">
-                    <p:outputLabel value="QUI va il contenuto dbdata" />
+
+                <!-- pannello di ricerca -->
+                <p:panel id="ricercaPnl" widgetVar="ricercaPnl" header="Ricerca ticket">
+
+                    <h:form id="ricercaForm">
+
+                        <div class="ui-inputgroup">
+                            <p:remoteCommand name="ricercaTicket" actionListener="#{mainCtrl.filtraTicket}" />
+                            <p:inputText id="ricercaNomeImmagineIT" widgetVar="ricercaNomeImmagineIT" placeholder="Nome immagine da ricercare" onkeypress="
+                                if (event.keyCode == 13) {
+                                    ricercaTicket();
+                                    return false;
+                                }" />
+                                
+                            <p:commandButton id="ricercaBtn" widgetVar="ricercaBtn" icon="fa fa-search" styleClass="white-button" global="false" />
+
+                            <p:overlayPanel id="ricercaDettaglioOP" widgetVar="ricercaDettaglioOP" for="ricercaBtn" dynamic="true" style="width:600px"
+                                dismissable="false" showCloseIcon="true" >
+
+                                <p:panelGrid id="ricercaDettaglioPG" widgetVar="ricercaDettaglioPG" style="width:100%">
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel id="macchinaLbl" value="Macchina:" />
+                                        </p:column>
+                                        <p:column style="width:60%">
+                                            <p:selectOneMenu id="macchinaSOM" widgetVar="macchinaSOM" value="#{mainBean.macchinaSelezionata}" style="width:90%">
+                                                <f:selectItems value="a;b;c;d"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel id="tipoLaserLbl" value="Tipo laser:" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu id="tipoLaserSOM" widgetVar="tipoLaserSOM" value="#{mainBean.macchinaSelezionata}" style="width:90%">
+                                                <f:selectItems value="a;b;c;d"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel id="dataInizioStampaLbl" value="Data inizio stampa:" for="dataInizioStampaP" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:calendar id="dataInizioStampaP" value="#{mainBean.macchinaSelezionata}" pattern="dd/mm/yyyy" />
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel id="dataFineStampaLbl" value="Data fine stampa:" for="dataFineStampaP" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:calendar id="dataFineStampaP" value="#{mainBean.macchinaSelezionata}" pattern="dd/mm/yyyy" />
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel id="stampaInErroreLbl" value="Stampa in errore:" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectBooleanCheckbox id="stampaInErroreCb" widgetVar="stampaInErroreCb" />
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    <f:facet name="footer">
+                                        <p:row>
+                                            <p:column colspan="2">
+                                                <p:commandButton id="ricercaFiltroBtn" widgetVar="ricercaFiltroBtn" value="Filtra" actionListener="#{mainCtrl.filtraTicket}" style="position:relative; left:65%"/>
+                                                <p:commandButton id="chiudiFiltroBtn" widgetVar="chiudiFiltroBtn" value="Chiudi" type="button" onclick="PF('ricercaDettaglioOP').hide()" style="position:relative; left: 85%"/>
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                            
+                                </p:panelGrid>
+
+                            </p:overlayPanel>
+
+                        </div>
+
+
+                    </h:form>
                 </p:panel>
+
+
+
+                <!-- pannello di visualizzazione ticket -->
+               
 
             </div>
 

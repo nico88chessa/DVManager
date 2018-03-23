@@ -25,6 +25,7 @@ public class MainCtrl {
 
     }
 
+    // metodi utilizzati nella pagina di gestione macchine
     public void addNewMachineToDB() {
 
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
@@ -121,6 +122,14 @@ public class MainCtrl {
             fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
         }
 
+    }
+
+
+    // metodi utilizzati nella pagine di ricerca stampe
+    public void filtraTicket() {
+        int test = 0;
+        System.out.println(test);
+        // TODO
     }
 
 }

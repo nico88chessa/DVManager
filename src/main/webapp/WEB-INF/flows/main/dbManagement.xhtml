@@ -115,23 +115,25 @@
                                     <p:outputLabel value="#{item.ip}" />
                                 </p:column>
                                 <p:column headerText="Ultimo aggiornamento">
-                                    <p:outputLabel value="#{item.lastUpdate}" />
+                                    <p:outputLabel value="#{item.lastUpdate eq null ? '-' : item.lastUpdate}" style="position: relative; left:50%" />
                                 </p:column>
-                                <p:column>
+                                <p:column headerText="Elimina" style="width:10%" >
                                         <p:commandButton
-                                            update=":machineForm:deleteMachineDlg"
+                                            update="machineForm:deleteMachineDlg"
                                             icon="ui-icon-cancel"
-                                            oncomplete="PF('deleteMachineDlg').show()">
+                                            oncomplete="PF('deleteMachineDlg').show()"
+                                            style="position: relative; left:40%" >
                                             <f:setPropertyActionListener
                                                 value="#{item}"
                                                 target="#{mainBean.selectedMachine}" />
                                         </p:commandButton>
                                     </p:column>
-                                <p:column>
+                                <p:column headerText="Ping test" style="width:10%" >
                                     <p:commandButton
                                         icon="ui-icon-ping"
                                         global="false"
-                                        oncomplete="callIP()" >
+                                        oncomplete="callIP()"
+                                        style="position: relative; left:40%" >
                                         <f:setPropertyActionListener
                                             value="#{item}"
                                             target="#{mainBean.selectedMachine}" />
@@ -175,10 +177,12 @@
                                         value="#{mainBean.selectedMachine.ip}" />
                                 </div>
 
-                                <f:facet name="footer">
-                                    <div class="ui-g-4" />
 
-                                    <div class="ui-g-4">
+
+                                <f:facet name="footer">
+                                    <div class="ui-g-8" />
+
+                                    <div class="ui-g-2">
                                         <p:commandButton
                                             id="confermaDeleteCB"
                                             widgetVar="confermaDeleteCB"
@@ -188,7 +192,7 @@
                                             update="globalGrow, :machineForm:machines" />
                                     </div>
 
-                                    <div class="ui-g-4">
+                                    <div class="ui-g-2">
                                         <p:commandButton
                                             id="annullaDeleteCB"
                                             widgetVar="annullaDeleteCB"

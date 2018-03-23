@@ -8,13 +8,21 @@ import com.dv.webmanager.db.bean.Machine;
 public class MainBean {
 
     public static final String globalGrowId = "globalGrow";
-    public static int ipPingTimes = 4;
 
+    // attributi per la pagina di gestione macchine
     private List<Machine> machines;
     private Machine newMachine;
     private Machine selectedMachine;
-
     private String ipCommandResult;
+
+    // attributi per la pagina di ricerca ticket
+    private List<String> ricercaListaMacchine;
+    private String ricercaMacchinaSelezionata;
+    private List<String> ricercaListaTipoLaser;
+    private String ricercaLaserSelezionato;
+    private java.util.Date ricercaDataInizioStampa;
+    private java.util.Date ricercaDataFineStampa;
+    private boolean ricercaIsStampaInErrore;
 
     public List<Machine> getMachines() {
         return machines;
