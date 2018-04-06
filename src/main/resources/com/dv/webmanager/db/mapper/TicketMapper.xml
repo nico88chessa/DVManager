@@ -3,8 +3,11 @@
 
 <mapper namespace="com.dv.webmanager.db.mapper.TicketMapper">
 
+    <!-- BEAN/DATA MAPPERS -->
+
     <resultMap type="Ticket" id="Ticket">
-        <id column="ID" property="id" />
+        <id column="ID_M" property="idM" />
+        <id column="ID_T" property="idT" />
         <id column="QUEUE_ACTIVATED" property="queueActivated" />
         <id column="QUEUE_POSITION" property="queuePosition" />
         <id column="WORK_ID" property="workId" />
@@ -15,10 +18,10 @@
         <id column="FILE_PIXEL_Y" property="filePixelY" />
         <id column="FILE_RESOLUTION_X" property="fileResolutionX" />
         <id column="FILE_RESOLUTION_Y" property="fileResolutionY" />
-        <id column="FILE_TOTALPIXELX" property="fileTotalPixelX" />
-        <id column="FILE_TOTALPIXELY" property="fileTotalPixelY" />
-        <id column="FILE_TOTALSIZEX" property="fileTotalSizeX" />
-        <id column="FILE_TOTALSIZEY" property="fileTotalSizeY" />
+        <id column="FILE_TOTALPIXELX" property="fileTotalpixelX" />
+        <id column="FILE_TOTALPIXELY" property="fileTotalpixelY" />
+        <id column="FILE_TOTALSIZEX" property="fileTotalsizex" />
+        <id column="FILE_TOTALSIZEY" property="fileTotalsizey" />
         <id column="CYLINDER_LENGTH" property="cylinderLength" />
         <id column="CYLINDER_DIAMETER" property="cylinderDiameter" />
         <id column="CYLINDER_START_AT" property="cylinderStartAt" />
@@ -42,6 +45,7 @@
         <id column="PRINT_STOP_AT" property="printStopAt" />
         <id column="PRINT_STATUS" property="printStatus" />
         <id column="PRINT_ERROR" property="printError" />
+        <id column="NOTES" property="notes" />
     </resultMap>
     
     <resultMap type="Machine" id="Machine">
@@ -51,13 +55,42 @@
         <id column="IP" property="ip" />    
     </resultMap>
     
+
+
+    <!-- QUERY -->
+    
     <insert id="insertMachine" parameterType="Machine" useGeneratedKeys="true">
         INSERT INTO MACHINE(NAME, LAST_UPDATE, IP)
         VALUES (#{name}, #{lastUpdate}, #{ip})
     </insert>
 
-    <select id="selectTicket" resultMap="Ticket">
+    <select id="selectTicket" parameterType="TicketFilter" resultMap="Ticket">
+        <bind name="filenameStr" value="'%' + &quot; + filename + &quot; + '%'" />
         SELECT * FROM PRINT_TICKET
+        <where>
+            <if test="idMachine != 0">
+                ID_M = #{idMachine}
+            </if>
+            <if test="filename != null">
+                AND FILE_NAME LIKE #{filenameStr}
+            </if>
+            <if test="dateStart != null">
+                <![CDATA[
+                AND PRINT_START_AT >= #{dateStart}
+                ]]>
+            </if>
+            <if test="dateEnd != null">
+                <![CDATA[
+                AND PRINT_START_AT <= #{dateEnd}
+                ]]>
+            </if>
+            <if test="laserKind != null">
+                AND LASER_KIND = #{laserKind}
+            </if>
+            <if test="printStatus != null">
+                AND PRINT_STATUS = #{printStatus}
+            </if>
+        </where>
     </select>
     
     <select id="selectMachine" resultMap="Machine">

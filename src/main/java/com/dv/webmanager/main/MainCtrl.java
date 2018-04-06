@@ -3,6 +3,8 @@ package com.dv.webmanager.main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -12,16 +14,38 @@ import org.mybatis.spring.MyBatisSystemException;
 
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
 import com.dv.webmanager.db.bean.Machine;
+import com.dv.webmanager.db.bean.Ticket;
+import com.dv.webmanager.db.bean.TicketFilter;
 import com.dv.webmanager.db.mapper.TicketMapper;
+import com.dv.webmanager.main.Constants.LaserKind;
 
 public class MainCtrl {
 
     public void init() {
 
         MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+
+        // attributi pagina gestione macchina
         bean.setNewMachine(new Machine());
         bean.setIpCommandResult(new String());
         this.updateMachineList();
+
+        // attributi pagina dati
+        List<String> filtroListaMacchine = new ArrayList<String>();
+        for (Machine m: bean.getMachines())
+            filtroListaMacchine.add(m.getName());
+
+        List<String> filtroListaLaserKind = new ArrayList<String>();
+        for (LaserKind lk : Constants.LaserKind.values())
+            filtroListaLaserKind.add(lk.getName());
+
+        bean.setFiltroListaMacchine(filtroListaMacchine);
+        bean.setFiltroListaLaserKind(filtroListaLaserKind);
+        bean.setFiltroDataA(Calendar.getInstance().getTime());
+        bean.setFiltroDataDa(Calendar.getInstance().getTime());
+        bean.setFiltroStampaInErrore(false);
+
+
 
     }
 
@@ -127,9 +151,14 @@ public class MainCtrl {
 
     // metodi utilizzati nella pagine di ricerca stampe
     public void filtraTicket() {
-        int test = 0;
-        System.out.println(test);
-        // TODO
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+
+        TicketFilter ticketFilter = new TicketFilter();
+
+        List<Ticket> tickets = mapper.selectTicket(ticketFilter);
+
+        System.out.println(tickets.size());
+
     }
 
 }

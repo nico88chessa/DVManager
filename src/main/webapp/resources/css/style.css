@@ -71,3 +71,12 @@
     height: 90% !important;
 }
 
+.filtroRicercaSxContent {
+	margin-top: 5px;
+}
+
+
+.filtroRicercaDxContent,
+.filtroRicercaDxCalendarContent input {
+    width: 240px;
+}

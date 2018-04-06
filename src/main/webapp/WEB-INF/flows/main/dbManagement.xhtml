@@ -159,22 +159,26 @@
                                         value="Nome macchina" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputMask id="nomeMacchinaIM"
+                                    <p:inputMask
+                                        id="nomeMacchinaIM"
                                         widgetVar="nomeMacchinaIM"
-                                        slotChar=" " readonly="true"
-                                        value="#{mainBean.selectedMachine.name}" />
+                                        slotChar=" "
+                                        readonly="true"
+                                        value="#{mainBean.selectedMachine.name}"
+                                    />
                                 </div>
 
                                 <div class="ui-g-6">
-                                    <p:outputLabel
-                                        value="Indirizzo IP" />
+                                    <p:outputLabel value="Indirizzo IP" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputMask id="ipIM"
+                                    <p:inputMask
+                                        id="ipIM"
                                         widgetVar="ipIM"
                                         mask="9?99.999.999.999"
                                         slotChar="0" readonly="true"
-                                        value="#{mainBean.selectedMachine.ip}" />
+                                        value="#{mainBean.selectedMachine.ip}"
+                                    />
                                 </div>
 
 
@@ -189,7 +193,8 @@
                                             value="Elimina"
                                             onclick="PF('deleteMachineDlg').hide()"
                                             actionListener="#{mainCtrl.deleteMachineFromDB()}"
-                                            update="globalGrow, :machineForm:machines" />
+                                            update="globalGrow, :machineForm:machines"
+                                        />
                                     </div>
 
                                     <div class="ui-g-2">
@@ -197,22 +202,29 @@
                                             id="annullaDeleteCB"
                                             widgetVar="annullaDeleteCB"
                                             value="Annulla"
-                                            onclick="PF('deleteMachineDlg').hide()" />
+                                            onclick="PF('deleteMachineDlg').hide()"
+                                        />
                                     </div>
                                 </f:facet>
                             </p:dialog>
 
                             <!-- finestra dialogo per comando di ping -->
-                            <p:dialog id="ipDlg" widgetVar="ipDlg"
-                                modal="true" resizable="true"
-                                visible="false" width="540"
+                            <p:dialog
+                                id="ipDlg"
+                                widgetVar="ipDlg"
+                                modal="true"
+                                resizable="true"
+                                visible="false"
+                                width="540"
                                 height="500">
 
-                                <p:inputTextarea id="ipITA"
+                                <p:inputTextarea
+                                    id="ipITA"
                                     widgetVar="ipITA"
                                     value="#{mainBean.ipCommandResult}"
                                     readonly="true"
-                                    styleClass="ipItaStyle" />
+                                    styleClass="ipItaStyle"
+                                />
 
                             </p:dialog>
 

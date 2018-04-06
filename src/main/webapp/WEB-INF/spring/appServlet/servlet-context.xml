@@ -59,7 +59,4 @@
 
     <import resource="./applicationBeans/beans.xml" />
 
-    <import resource="./scheduler-config.xml" />
-    
-
 </beans>

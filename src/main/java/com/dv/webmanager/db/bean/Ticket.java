@@ -1,10 +1,9 @@
 package com.dv.webmanager.db.bean;
 
-import java.util.Date;
-
 public class Ticket {
 
-    private int id;
+    private int idM;
+    private int idT;
     private int queueActivated;
     private int queuePosition;
     private String workId;
@@ -15,10 +14,10 @@ public class Ticket {
     private int filePixelY;
     private double fileResolutionX;
     private double fileResolutionY;
-    private int fileTotalPixelX;
-    private int fileTotalPixelY;
-    private double fileTotalSizeX;
-    private double fileTotalSizeY;
+    private int fileTotalpixelX;
+    private int fileTotalpixelY;
+    private double fileTotalsizex;
+    private double fileTotalsizey;
     private double cylinderLength;
     private double cylinderDiameter;
     private double cylinderStartAt;
@@ -38,16 +37,23 @@ public class Ticket {
     private double setupFocalPosition;
     private int setupSpeed;
     private String setupEngravingMode;
-    private Date printStartAt;
-    private Date printStopAt;
+    private java.util.Date printStartAt;
+    private java.util.Date printStopAt;
     private int printStatus;
     private String printError;
-    
-    public int getId() {
-        return id;
+    private String notes;
+
+    public int getIdM() {
+        return idM;
     }
-    public void setId(int id) {
-        this.id = id;
+    public void setIdM(int idM) {
+        this.idM = idM;
+    }
+    public int getIdT() {
+        return idT;
+    }
+    public void setIdT(int idT) {
+        this.idT = idT;
     }
     public int getQueueActivated() {
         return queueActivated;
@@ -109,29 +115,29 @@ public class Ticket {
     public void setFileResolutionY(double fileResolutionY) {
         this.fileResolutionY = fileResolutionY;
     }
-    public int getFileTotalPixelX() {
-        return fileTotalPixelX;
+    public int getFileTotalpixelX() {
+        return fileTotalpixelX;
     }
-    public void setFileTotalPixelX(int fileTotalPixelX) {
-        this.fileTotalPixelX = fileTotalPixelX;
+    public void setFileTotalpixelX(int fileTotalpixelX) {
+        this.fileTotalpixelX = fileTotalpixelX;
     }
-    public int getFileTotalPixelY() {
-        return fileTotalPixelY;
+    public int getFileTotalpixelY() {
+        return fileTotalpixelY;
     }
-    public void setFileTotalPixelY(int fileTotalPixelY) {
-        this.fileTotalPixelY = fileTotalPixelY;
+    public void setFileTotalpixelY(int fileTotalpixelY) {
+        this.fileTotalpixelY = fileTotalpixelY;
     }
-    public double getFileTotalSizeX() {
-        return fileTotalSizeX;
+    public double getFileTotalsizex() {
+        return fileTotalsizex;
     }
-    public void setFileTotalSizeX(double fileTotalSizeX) {
-        this.fileTotalSizeX = fileTotalSizeX;
+    public void setFileTotalsizex(double fileTotalsizex) {
+        this.fileTotalsizex = fileTotalsizex;
     }
-    public double getFileTotalSizeY() {
-        return fileTotalSizeY;
+    public double getFileTotalsizey() {
+        return fileTotalsizey;
     }
-    public void setFileTotalSizeY(double fileTotalSizeY) {
-        this.fileTotalSizeY = fileTotalSizeY;
+    public void setFileTotalsizey(double fileTotalsizey) {
+        this.fileTotalsizey = fileTotalsizey;
     }
     public double getCylinderLength() {
         return cylinderLength;
@@ -247,16 +253,16 @@ public class Ticket {
     public void setSetupEngravingMode(String setupEngravingMode) {
         this.setupEngravingMode = setupEngravingMode;
     }
-    public Date getPrintStartAt() {
+    public java.util.Date getPrintStartAt() {
         return printStartAt;
     }
-    public void setPrintStartAt(Date printStartAt) {
+    public void setPrintStartAt(java.util.Date printStartAt) {
         this.printStartAt = printStartAt;
     }
-    public Date getPrintStopAt() {
+    public java.util.Date getPrintStopAt() {
         return printStopAt;
     }
-    public void setPrintStopAt(Date printStopAt) {
+    public void setPrintStopAt(java.util.Date printStopAt) {
         this.printStopAt = printStopAt;
     }
     public int getPrintStatus() {
@@ -271,5 +277,11 @@ public class Ticket {
     public void setPrintError(String printError) {
         this.printError = printError;
     }
-    
+    public String getNotes() {
+        return notes;
+    }
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
 }

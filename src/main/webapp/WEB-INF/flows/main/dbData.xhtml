@@ -17,95 +17,186 @@
 
 
                 <!-- pannello di ricerca -->
-                <p:panel id="ricercaPnl" widgetVar="ricercaPnl" header="Ricerca ticket">
+                <div id="divFiltraRicerca">
 
                     <h:form id="ricercaForm">
 
                         <div class="ui-inputgroup">
-                            <p:remoteCommand name="ricercaTicket" actionListener="#{mainCtrl.filtraTicket}" />
-                            <p:inputText id="ricercaNomeImmagineIT" widgetVar="ricercaNomeImmagineIT" placeholder="Nome immagine da ricercare" onkeypress="
-                                if (event.keyCode == 13) {
-                                    ricercaTicket();
-                                    return false;
-                                }" />
+                            <p:remoteCommand
+                                name="filtraTicket"
+                                actionListener="#{mainCtrl.filtraTicket}"
+                            />
                                 
-                            <p:commandButton id="ricercaBtn" widgetVar="ricercaBtn" icon="fa fa-search" styleClass="white-button" global="false" />
-
-                            <p:overlayPanel id="ricercaDettaglioOP" widgetVar="ricercaDettaglioOP" for="ricercaBtn" dynamic="true" style="width:600px"
-                                dismissable="false" showCloseIcon="true" >
-
-                                <p:panelGrid id="ricercaDettaglioPG" widgetVar="ricercaDettaglioPG" style="width:100%">
-                                    <p:row>
-                                        <p:column>
-                                            <p:outputLabel id="macchinaLbl" value="Macchina:" />
-                                        </p:column>
-                                        <p:column style="width:60%">
-                                            <p:selectOneMenu id="macchinaSOM" widgetVar="macchinaSOM" value="#{mainBean.macchinaSelezionata}" style="width:90%">
-                                                <f:selectItems value="a;b;c;d"/>
-                                            </p:selectOneMenu>
-                                        </p:column>
-                                    </p:row>
-                                    
-                                    <p:row>
-                                        <p:column>
-                                            <p:outputLabel id="tipoLaserLbl" value="Tipo laser:" />
-                                        </p:column>
-                                        <p:column>
-                                            <p:selectOneMenu id="tipoLaserSOM" widgetVar="tipoLaserSOM" value="#{mainBean.macchinaSelezionata}" style="width:90%">
-                                                <f:selectItems value="a;b;c;d"/>
-                                            </p:selectOneMenu>
-                                        </p:column>
-                                    </p:row>
-                                    
-                                    <p:row>
-                                        <p:column>
-                                            <p:outputLabel id="dataInizioStampaLbl" value="Data inizio stampa:" for="dataInizioStampaP" />
-                                        </p:column>
-                                        <p:column>
-                                            <p:calendar id="dataInizioStampaP" value="#{mainBean.macchinaSelezionata}" pattern="dd/mm/yyyy" />
-                                        </p:column>
-                                    </p:row>
-                                    
-                                    <p:row>
-                                        <p:column>
-                                            <p:outputLabel id="dataFineStampaLbl" value="Data fine stampa:" for="dataFineStampaP" />
-                                        </p:column>
-                                        <p:column>
-                                            <p:calendar id="dataFineStampaP" value="#{mainBean.macchinaSelezionata}" pattern="dd/mm/yyyy" />
-                                        </p:column>
-                                    </p:row>
-                                    
-                                    <p:row>
-                                        <p:column>
-                                            <p:outputLabel id="stampaInErroreLbl" value="Stampa in errore:" />
-                                        </p:column>
-                                        <p:column>
-                                            <p:selectBooleanCheckbox id="stampaInErroreCb" widgetVar="stampaInErroreCb" />
-                                        </p:column>
-                                    </p:row>
-                                    
-                                    <f:facet name="footer">
-                                        <p:row>
-                                            <p:column colspan="2">
-                                                <p:commandButton id="ricercaFiltroBtn" widgetVar="ricercaFiltroBtn" value="Filtra" actionListener="#{mainCtrl.filtraTicket}" style="position:relative; left:65%"/>
-                                                <p:commandButton id="chiudiFiltroBtn" widgetVar="chiudiFiltroBtn" value="Chiudi" type="button" onclick="PF('ricercaDettaglioOP').hide()" style="position:relative; left: 85%"/>
-                                            </p:column>
-                                        </p:row>
-                                    </f:facet>
-                            
-                                </p:panelGrid>
-
-                            </p:overlayPanel>
+                            <p:commandButton
+                                id="ricercaBtn"
+                                widgetVar="ricercaBtn"
+                                value="Filtro ricerca"
+                                type="button"
+                                onclick="PF('dialogFiltroRicerca').show()"
+                            />
 
                         </div>
 
+                        <p:dialog
+                            id="dialogFiltroRicerca"
+                            widgetVar="dialogFiltroRicerca"
+                            width="500"
+                            minWidth="500"
+                            height="350"
+                            minHeight="350"
+                            header="Filtro ricerca"
+                            modal="true">
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Macchina"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:selectOneMenu
+                                        id="somMacchina"
+                                        widgetVar="somMacchina"
+                                        autoWidth="false"
+                                        styleClass="filtroRicercaDxContent"
+                                        value="#{mainBean.filtroMacchinaSelezionata}"
+                                        >
+                                        <f:selectItems value="#{mainBean.filtroListaMacchine}" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Nome file"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:inputText
+                                        id="itNomefile"
+                                        widgetVar="itNomefile"
+                                        styleClass="filtroRicercaDxContent"
+                                        value="#{mainBean.filtroNomefile}"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Tipo laser"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:selectOneMenu
+                                        id="somTipoLaser"
+                                        widgetVar="somTipoLaser"
+                                        autoWidth="false"
+                                        styleClass="filtroRicercaDxContent"
+                                        value="#{mainBean.filtroLaserKindSelezionato}"
+                                        >
+                                        <f:selectItems value="#{mainBean.filtroListaLaserKind}" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Da"
+                                        for="calendarDa"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:calendar
+                                        id="calendarDa"
+                                        pattern="dd/MM/yyyy"
+                                        styleClass="filtroRicercaDxCalendarContent"
+                                        value="#{mainBean.filtroDataDa}"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="A"
+                                        for="calendarA"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:calendar
+                                        id="calendarA"
+                                        pattern="dd/MM/yyyy"
+                                        styleClass="filtroRicercaDxCalendarContent"
+                                        value="#{mainBean.filtroDataA}"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Stampa in errore"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:selectBooleanCheckbox
+                                        id="sbcbStampaInErrore"
+                                        widgetVar="sbcbStampaInErrore"
+                                        styleClass="filtroRicercaDxContent"
+                                        value="#{mainBean.filtroStampaInErrore}"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                            
+                            <f:facet name="footer">
+                                <div class="ui-g-8" />
+
+                                <div class="ui-g-2">
+                                    <p:commandButton
+                                        id="ricercaFiltrataCB"
+                                        widgetVar="ricercaFiltrataCB"
+                                        value="Filtra"
+                                        actionListener="#{mainCtrl.filtraTicket()}"
+                                    />
+                                </div>
+
+                                <div class="ui-g-2">
+                                    <p:commandButton
+                                        id="annullaFiltroCB"
+                                        widgetVar="annullaFiltroCB"
+                                        value="Annulla"
+                                        onclick="PF('annullaFiltroCB').close()"
+                                    />
+                                </div>
+                            </f:facet>                            
+                            
+                        </p:dialog> 
 
                     </h:form>
-                </p:panel>
-
+                
+                </div>
 
 
                 <!-- pannello di visualizzazione ticket -->
+                <div id="divVisualizzaDati">
+                
+                </div>
                
 
             </div>
