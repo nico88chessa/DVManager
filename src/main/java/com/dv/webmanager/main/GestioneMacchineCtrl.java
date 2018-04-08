@@ -3,8 +3,6 @@ package com.dv.webmanager.main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -17,59 +15,41 @@ import com.dv.webmanager.db.bean.Machine;
 import com.dv.webmanager.db.bean.Ticket;
 import com.dv.webmanager.db.bean.TicketFilter;
 import com.dv.webmanager.db.mapper.TicketMapper;
-import com.dv.webmanager.main.Constants.LaserKind;
 
-public class MainCtrl {
+public class GestioneMacchineCtrl {
 
     public void init() {
 
-        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+        GestioneMacchineBean bean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
 
         // attributi pagina gestione macchina
-        bean.setNewMachine(new Machine());
-        bean.setIpCommandResult(new String());
+        bean.setNuovaMacchina(new Machine());
+        bean.setIpRisultato(new String());
         this.updateMachineList();
-
-        // attributi pagina dati
-        List<String> filtroListaMacchine = new ArrayList<String>();
-        for (Machine m: bean.getMachines())
-            filtroListaMacchine.add(m.getName());
-
-        List<String> filtroListaLaserKind = new ArrayList<String>();
-        for (LaserKind lk : Constants.LaserKind.values())
-            filtroListaLaserKind.add(lk.getName());
-
-        bean.setFiltroListaMacchine(filtroListaMacchine);
-        bean.setFiltroListaLaserKind(filtroListaLaserKind);
-        bean.setFiltroDataA(Calendar.getInstance().getTime());
-        bean.setFiltroDataDa(Calendar.getInstance().getTime());
-        bean.setFiltroStampaInErrore(false);
-
-
 
     }
 
     // metodi utilizzati nella pagina di gestione macchine
     public void addNewMachineToDB() {
 
-        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+        GestioneMacchineBean bean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
 
-        Machine newMachine = new Machine();
-        newMachine.setName(bean.getNewMachine().getName());
-        newMachine.setIp(bean.getNewMachine().getIp());
-        newMachine.setLastUpdate(null);
+        Machine nuovaMacchina = new Machine();
+        nuovaMacchina.setName(bean.getNuovaMacchina().getName());
+        nuovaMacchina.setIp(bean.getNuovaMacchina().getIp());
+        nuovaMacchina.setLastUpdate(null);
 
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
         try {
-            mapper.insertMachine(newMachine);
+            mapper.insertMachine(nuovaMacchina);
         } catch (MyBatisSystemException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
+            fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
             return;
         }
 
         FacesContext fc = FacesContext.getCurrentInstance();
-        fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina inserita correttamente.", "") );
+        fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina inserita correttamente.", "") );
 
         this.updateMachineList();
 
@@ -83,12 +63,12 @@ public class MainCtrl {
             machines = mapper.selectMachine();
         } catch (MyBatisSystemException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
+            fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
             return;
         }
 
-        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        bean.setMachines(machines);
+        GestioneMacchineBean bean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
+        bean.setListaMacchine(machines);
 
         try {
             Thread.sleep(1);
@@ -99,34 +79,34 @@ public class MainCtrl {
 
     public void deleteMachineFromDB() {
 
-        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
+        GestioneMacchineBean bean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
         try {
-            mapper.deleteMachine(bean.getSelectedMachine());
+            mapper.deleteMachine(bean.getMacchinaSelezionata());
         } catch (MyBatisSystemException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
+            fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
             return;
         }
 
         FacesContext fc = FacesContext.getCurrentInstance();
-        fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina eliminata correttamente.", "") );
+        fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina eliminata correttamente.", "") );
 
         this.updateMachineList();
 
     }
 
     public void clearNewMachineValues() {
-        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        bean.setNewMachine(new Machine());
+        GestioneMacchineBean bean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
+        bean.setNuovaMacchina(new Machine());
     }
 
     public void pingMachine() {
 
-        MainBean bean = ApplicationContextAwareImpl.<MainBean>getBean("mainBean");
-        bean.setIpCommandResult("");
+        GestioneMacchineBean bean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
+        bean.setIpRisultato("");
 
-        String pingCmd = "ping -c4 " + bean.getSelectedMachine().getIp();
+        String pingCmd = "ping -c4 " + bean.getMacchinaSelezionata().getIp();
 
         try {
 
@@ -136,14 +116,14 @@ public class MainCtrl {
             InputStreamReader(p.getInputStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null)
-                bean.setIpCommandResult(bean.getIpCommandResult()+inputLine);
+                bean.setIpRisultato(bean.getIpRisultato()+inputLine);
             in.close();
 
-            bean.setIpCommandResult(bean.getIpCommandResult()+"\n\n");
+            bean.setIpRisultato(bean.getIpRisultato()+"\n\n");
 
         } catch (IOException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.addMessage(MainBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
+            fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
         }
 
     }

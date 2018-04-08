@@ -14,9 +14,11 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <bean id="mainBean" class="com.dv.webmanager.main.MainBean" scope="session" />
-        
-    <bean id="mainCtrl" class="com.dv.webmanager.main.MainCtrl" scope="prototype" />
+    <bean id="gestioneMacchineBean" class="com.dv.webmanager.main.GestioneMacchineBean" scope="session" />
+    <bean id="gestioneMacchineCtrl" class="com.dv.webmanager.main.GestioneMacchineCtrl" scope="prototype" />
+    
+    <bean id="visualizzazioneTicketBean" class="com.dv.webmanager.main.VisualizzazioneTicketBean" scope="session" />
+    <bean id="visualizzazioneTicketCtrl" class="com.dv.webmanager.main.VisualizzazioneTicketCtrl" scope="prototype" />
 
 </beans>
 

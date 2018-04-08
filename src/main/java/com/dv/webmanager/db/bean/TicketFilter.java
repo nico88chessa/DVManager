@@ -7,7 +7,7 @@ public class TicketFilter {
     private java.util.Date dateStart;
     private java.util.Date dateEnd;
     private int laserKind;
-    private int printStatus;
+    private int[] printStatus;
 
     public int getIdMachine() {
         return idMachine;
@@ -39,10 +39,10 @@ public class TicketFilter {
     public void setLaserKind(int laserKind) {
         this.laserKind = laserKind;
     }
-    public int getPrintStatus() {
+    public int[] getPrintStatus() {
         return printStatus;
     }
-    public void setPrintStatus(int printStatus) {
+    public void setPrintStatus(int[] printStatus) {
         this.printStatus = printStatus;
     }
 

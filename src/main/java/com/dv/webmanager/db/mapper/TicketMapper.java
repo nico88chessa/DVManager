@@ -2,6 +2,7 @@ package com.dv.webmanager.db.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.MyBatisSystemException;
 
 import com.dv.webmanager.db.bean.Machine;
@@ -11,6 +12,8 @@ import com.dv.webmanager.db.bean.TicketFilter;
 public interface TicketMapper {
 
     public List<Ticket> selectTicket(TicketFilter ticketFilter) throws MyBatisSystemException;
+
+    public List<Ticket> selectTicketLimit(@Param("ticketFilter") TicketFilter ticketFilter, @Param("count") int count, @Param("offset") int offset) throws MyBatisSystemException;
 
     public List<Machine> selectMachine() throws MyBatisSystemException;
 

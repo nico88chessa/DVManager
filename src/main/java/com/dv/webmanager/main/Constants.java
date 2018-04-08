@@ -4,6 +4,7 @@ public class Constants {
 
     public enum LaserKind {
 
+        NONE(-255, ""),
         CO2(0, "CO2"),
         UV(1, "UV"),
         YAGCW(2, "YAGCW"),
@@ -12,7 +13,6 @@ public class Constants {
         YAGP(5, "YAGP"),
         YAGP2(6, "YAGP2"),
         MYAG(7, "MYAG");
-
 
         private final int code;
         private final String name;
@@ -29,9 +29,11 @@ public class Constants {
     };
 
     public enum PrintStatus {
-        PRINTING(0, "PRINTING"),
-        PRINTED(1, "PRINTED"),
-        PRINT_ERROR(-1, "PRINT_ERROR");
+
+        NONE(-255, ""),
+        PRINTING(0, "IN STAMPA"),
+        PRINTED(1, "COMPLETATO"),
+        PRINT_ERROR(-1, "ERRORE STAMPA");
 
         private final int code;
         private final String name;

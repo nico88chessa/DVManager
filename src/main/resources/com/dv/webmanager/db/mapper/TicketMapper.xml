@@ -55,8 +55,6 @@
         <id column="IP" property="ip" />    
     </resultMap>
     
-
-
     <!-- QUERY -->
     
     <insert id="insertMachine" parameterType="Machine" useGeneratedKeys="true">
@@ -68,7 +66,7 @@
         <bind name="filenameStr" value="'%' + &quot; + filename + &quot; + '%'" />
         SELECT * FROM PRINT_TICKET
         <where>
-            <if test="idMachine != 0">
+            <if test="idMachine != -1">
                 ID_M = #{idMachine}
             </if>
             <if test="filename != null">
@@ -84,13 +82,51 @@
                 AND PRINT_START_AT <= #{dateEnd}
                 ]]>
             </if>
-            <if test="laserKind != null">
+            <if test="laserKind != -255">
                 AND LASER_KIND = #{laserKind}
             </if>
-            <if test="printStatus != null">
-                AND PRINT_STATUS = #{printStatus}
+            
+            <if test="printStatus.length != 0">
+                AND PRINT_STATUS IN
+                <foreach item="int" collection="list" separator=",">
+                    (#{item})
+                </foreach>
             </if>
         </where>
+    </select>
+    
+    <select id="selectTicketLimit" parameterType="map" resultMap="Ticket">
+        <bind name="filenameStr" value="'%' + &quot; + filename + &quot; + '%'" />
+        SELECT * FROM PRINT_TICKET
+        <where>
+            <if test="ticketFilter.idMachine != -1">
+                ID_M = #{ticketFilter.idMachine}
+            </if>
+            <if test="ticketFilter.filename != null">
+                AND FILE_NAME LIKE #{ticketFilter.filenameStr}
+            </if>
+            <if test="ticketFilter.dateStart != null">
+                <![CDATA[
+                AND PRINT_START_AT >= #{ticketFilter.dateStart}
+                ]]>
+            </if>
+            <if test="ticketFilter.dateEnd != null">
+                <![CDATA[
+                AND PRINT_START_AT <= #{ticketFilter.dateEnd}
+                ]]>
+            </if>
+            <if test="ticketFilter.laserKind != -255">
+                AND LASER_KIND = #{ticketFilter.laserKind}
+            </if>
+            
+            <if test="ticketFilter.printStatus.length != 0">
+                AND PRINT_STATUS IN
+                <foreach item="int" collection="list" separator=",">
+                    (#{item})
+                </foreach>
+            </if>
+        </where>
+        LIMIT #{count} OFFSET #{offset}
     </select>
     
     <select id="selectMachine" resultMap="Machine">
