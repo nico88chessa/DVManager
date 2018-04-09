@@ -6,8 +6,6 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:p="http://primefaces.org/ui">
 
-<h:head />
-
 <h:body>
 
 
@@ -60,7 +58,7 @@
                                     >
                                     <f:selectItem
                                         itemLabel="Seleziona la macchina"
-                                        itemValue="" />
+                                        itemValue="-1" />
                                     <f:selectItems
                                         value="#{visualizzazioneTicketBean.filtroListaMacchine}"
                                         var="macchina"
@@ -105,7 +103,7 @@
                                     >
                                     <f:selectItem
                                         itemLabel="Seleziona il laser"
-                                        itemValue="-1" />
+                                        itemValue="-255" />
                                     <f:selectItems
                                         value="#{visualizzazioneTicketBean.filtroListaLaserKind}"
                                         var="item"
@@ -197,7 +195,7 @@
                                     widgetVar="ricercaFiltrataCB"
                                     value="Filtra"
                                     actionListener="#{visualizzazioneTicketCtrl.filtraTicket()}"
-                                    update=":filtroRicercaForm:tabellaTicket"
+                                    update="filtroRicercaForm:tabellaTicket"
                                     oncomplete="PF('filtroRicercaDlg').hide()"
                                 />
                             </div>
@@ -229,22 +227,22 @@
                         rows="30"
                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                         paginatorPosition="bottom"
-                        rowsPerPageTemplate="20, 30, 40"
+                        rowsPerPageTemplate="10, 20, 30, 40"
                         selectionMode="single"
                         selection="#{visualizzazioneTicketBean.ticketSelezionato}"
                         lazy="true">
                         
                         <p:column headerText="Macchina">
-                            <h:outputText value="#{ticket.idM}" />
+                            <h:outputText value="#{ticket.idM} #{ticket.machineName != '' ? '- '+=ticket.machineName : ''}" />
                         </p:column>
                         <p:column headerText="Work ID">
-                            <h:outputText value="#{ticket.workId}" />
+                            <h:outputText value="#{ticket.idT}" />
                         </p:column>
                         <p:column headerText="Nome file">
                             <h:outputText value="#{ticket.fileName}" />
                         </p:column>
                         <p:column headerText="Tipo laser">
-                            <h:outputText value="#{ticket.laserKind}" />
+                            <h:outputText value="#{ticket.laserKind.name}" />
                         </p:column>
                         <p:column headerText="Inizio stampa">
                             <h:outputText value="#{ticket.printStartAt}" />

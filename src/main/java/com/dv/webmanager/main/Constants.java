@@ -26,6 +26,20 @@ public class Constants {
 
         public String getName() { return name; }
 
+        public static LaserKind valueFromInt(int value) {
+            switch (value) {
+            case 0: return CO2;
+            case 1: return UV;
+            case 2: return YAGCW;
+            case 3: return YAGHP;
+            case 4: return IR;
+            case 5: return YAGP;
+            case 6: return YAGP2;
+            case 7: return MYAG;
+            default: return NONE;
+            }
+        }
+
     };
 
     public enum PrintStatus {
@@ -46,6 +60,15 @@ public class Constants {
         public int getCode() { return code; }
 
         public String getName() { return name; }
+
+        public static PrintStatus valueFromInt(int value) {
+            switch (value) {
+            case 0: return PRINTING;
+            case 1: return PRINTED;
+            case -1: return PRINT_ERROR;
+            default: return NONE;
+            }
+        }
 
 
     };

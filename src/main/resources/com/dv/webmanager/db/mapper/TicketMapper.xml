@@ -62,6 +62,48 @@
         VALUES (#{name}, #{lastUpdate}, #{ip})
     </insert>
 
+    <delete id="deleteMachine" parameterType="Machine" flushCache="true">
+        DELETE FROM MACHINE
+        WHERE MACHINE.ID = #{id}
+    </delete>
+    
+    <select id="selectMachine" resultMap="Machine">
+        SELECT * FROM MACHINE
+    </select>
+    
+    <select id="selectTicketCount" resultType="int">
+        <bind name="filenameStr" value="'%' + &quot; + filename + &quot; + '%'" />
+        SELECT COUNT(*) FROM PRINT_TICKET
+        <where>
+            <if test="idMachine != -1">
+                ID_M = #{idMachine}
+            </if>
+            <if test="filename != null">
+                AND FILE_NAME LIKE #{filenameStr}
+            </if>
+            <if test="dateStart != null">
+                <![CDATA[
+                AND PRINT_START_AT >= #{dateStart}
+                ]]>
+            </if>
+            <if test="dateEnd != null">
+                <![CDATA[
+                AND PRINT_START_AT <= #{dateEnd}
+                ]]>
+            </if>
+            <if test="laserKind != -255">
+                AND LASER_KIND = #{laserKind}
+            </if>
+            
+            <if test="printStatus.length != 0">
+                AND PRINT_STATUS IN
+                <foreach item="item" collection="printStatus" separator="," open="(" close=")">
+                    (#{item})
+                </foreach>
+            </if>
+        </where>
+    </select>
+
     <select id="selectTicket" parameterType="TicketFilter" resultMap="Ticket">
         <bind name="filenameStr" value="'%' + &quot; + filename + &quot; + '%'" />
         SELECT * FROM PRINT_TICKET
@@ -88,7 +130,7 @@
             
             <if test="printStatus.length != 0">
                 AND PRINT_STATUS IN
-                <foreach item="int" collection="list" separator=",">
+                <foreach item="item" collection="printStatus" separator="," open="(" close=")">
                     (#{item})
                 </foreach>
             </if>
@@ -121,7 +163,7 @@
             
             <if test="ticketFilter.printStatus.length != 0">
                 AND PRINT_STATUS IN
-                <foreach item="int" collection="list" separator=",">
+                <foreach item="item" collection="ticketFilter.printStatus" separator="," open="(" close=")">
                     (#{item})
                 </foreach>
             </if>
@@ -129,13 +171,5 @@
         LIMIT #{count} OFFSET #{offset}
     </select>
     
-    <select id="selectMachine" resultMap="Machine">
-        SELECT * FROM MACHINE
-    </select>
     
-    <delete id="deleteMachine" parameterType="Machine" flushCache="true">
-        DELETE FROM MACHINE
-        WHERE MACHINE.ID = #{id}
-    </delete>
-
 </mapper>

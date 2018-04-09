@@ -59,6 +59,7 @@ public class VisualizzazioneTicketCtrl {
     public void filtraTicket() {
 
         VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
+        GestioneMacchineBean gestioneMacchinaBean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
 
         TicketFilter filtro = new TicketFilter();
@@ -74,9 +75,7 @@ public class VisualizzazioneTicketCtrl {
         filtro.setLaserKind(visualizzazioneTicketBean.getFiltroLaserKindSelezionato());
         filtro.setPrintStatus(visualizzazioneTicketBean.getFiltroStatoTicketSelezionato());
 
-//        List<Ticket> listaTicket = mapper.selectTicket(filtro);
-
-        LazyTicketDataModel lazyTicketList = new LazyTicketDataModel(mapper, filtro);
+        LazyTicketDataModel lazyTicketList = new LazyTicketDataModel(gestioneMacchinaBean, mapper, filtro);
 
         visualizzazioneTicketBean.setListaTicket(lazyTicketList);
     }

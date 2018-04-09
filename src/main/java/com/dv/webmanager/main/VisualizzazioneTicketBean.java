@@ -24,7 +24,7 @@ public class VisualizzazioneTicketBean {
 
 
     // attributi lista ticket
-    private LazyDataModel<Ticket> listaTicket;
+    private LazyDataModel<WebTicket> listaTicket;
     private Ticket ticketSelezionato;
 
 
@@ -83,10 +83,10 @@ public class VisualizzazioneTicketBean {
     public void setFiltroStatoTicketSelezionato(int[] filtroStatoTicketSelezionato) {
         this.filtroStatoTicketSelezionato = filtroStatoTicketSelezionato;
     }
-    public LazyDataModel<Ticket> getListaTicket() {
+    public LazyDataModel<WebTicket> getListaTicket() {
         return listaTicket;
     }
-    public void setListaTicket(LazyDataModel<Ticket> listaTicket) {
+    public void setListaTicket(LazyDataModel<WebTicket> listaTicket) {
         this.listaTicket = listaTicket;
     }
     public Ticket getTicketSelezionato() {
