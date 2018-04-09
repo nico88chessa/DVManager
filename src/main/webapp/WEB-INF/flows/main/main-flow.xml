@@ -13,6 +13,7 @@
         <on-entry>
             <evaluate expression="gestioneMacchineCtrl.updateMachineList()" />
         </on-entry>
+        <transition on="gestioneMacchineAction" to="" />
         <transition on="visualizzazioneTicketAction" to="visualizzazioneTicket" />
     </view-state>
 
@@ -20,6 +21,7 @@
         <on-entry>
             <evaluate expression="visualizzazioneTicketCtrl.aggiornaListaMacchineFiltro()" />
         </on-entry>
+        <transition on="visualizzazioneTicketAction" to="" />
         <transition on="gestioneMacchineAction" to="gestioneMacchine" />
     </view-state>
 

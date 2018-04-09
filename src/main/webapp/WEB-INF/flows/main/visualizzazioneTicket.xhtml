@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -8,264 +7,279 @@
 
 <h:body>
 
-
     <ui:composition template="/WEB-INF/layout/appLayout.xhtml">
 
     <ui:define name="content">
 
         <div id="visualizzazioneTicket">
 
-            <h:form id="filtroRicercaForm">
-
-                <!-- pannello di ricerca -->
-                <div id="filtroRicerca">
-
-                    <div class="ui-inputgroup">
-                        <p:commandButton
-                            id="ricercaCB"
-                            widgetVar="ricercaCB"
-                            value="Filtro ricerca"
-                            type="button"
-                            onclick="PF('filtroRicercaDlg').show()"
-                        />
-
+            <div class="ui-g-12">
+    
+                <h:form id="filtroRicercaForm">
+    
+                    <!-- pannello di ricerca -->
+                    <div id="filtroRicerca">
+    
+                        <div class="ui-inputgroup">
+                            <p:commandButton
+                                id="ricercaCB"
+                                widgetVar="ricercaCB"
+                                value="Filtro ricerca"
+                                type="button"
+                                onclick="PF('filtroRicercaDlg').show()"
+                            />
+    
+                        </div>
+    
+                        <p:dialog
+                            id="filtroRicercaDlg"
+                            widgetVar="filtroRicercaDlg"
+                            width="500"
+                            minWidth="500"
+                            height="350"
+                            minHeight="350"
+                            header="Filtro ricerca"
+                            modal="true">
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Macchina"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:selectOneMenu
+                                        id="macchinaSOM"
+                                        widgetVar="macchinaSOM"
+                                        autoWidth="false"
+                                        styleClass="filtroRicercaDxContent"
+                                        value="#{visualizzazioneTicketBean.filtroMacchinaSelezionata}"
+                                        >
+                                        <f:selectItem
+                                            itemLabel="Seleziona la macchina"
+                                            itemValue="-1" />
+                                        <f:selectItems
+                                            value="#{visualizzazioneTicketBean.filtroListaMacchine}"
+                                            var="macchina"
+                                            itemLabel="#{macchina.name}"
+                                            itemValue="#{macchina.id}"
+                                            />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Nome file"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:inputText
+                                        id="nomefileIT"
+                                        widgetVar="nomefileIT"
+                                        styleClass="filtroRicercaDxContent"
+                                        value="#{visualizzazioneTicketBean.filtroNomefile}"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Tipo laser"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:selectOneMenu
+                                        id="tipoLaserSOM"
+                                        widgetVar="tipoLaserSOM"
+                                        autoWidth="false"
+                                        styleClass="filtroRicercaDxContent"
+                                        value="#{visualizzazioneTicketBean.filtroLaserKindSelezionato}"
+                                        >
+                                        <f:selectItem
+                                            itemLabel="Seleziona il laser"
+                                            itemValue="-255" />
+                                        <f:selectItems
+                                            value="#{visualizzazioneTicketBean.filtroListaLaserKind}"
+                                            var="item"
+                                            itemLabel="#{item.name}"
+                                            itemValue="#{item.code}"
+                                            />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Da"
+                                        for="DaCAL"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:calendar
+                                        id="DaCAL"
+                                        widgetVar="DaCAL"
+                                        pattern="dd/MM/yyyy"
+                                        styleClass="filtroRicercaDxCalendarContent"
+                                        value="#{visualizzazioneTicketBean.filtroDataDa}"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="A"
+                                        for="ACAL"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    <p:calendar
+                                        id="ACAL"
+                                        widgetVar="ACAL"
+                                        pattern="dd/MM/yyyy"
+                                        styleClass="filtroRicercaDxCalendarContent"
+                                        value="#{visualizzazioneTicketBean.filtroDataA}"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ui-g-4">
+                                    <p:outputLabel
+                                        value="Stato"
+                                        styleClass="filtroRicercaSxContent"
+                                    />
+                                </div>
+                                <div class="ui-g-8">
+                                    
+                                    <p:selectManyCheckbox
+                                        id="statoStampaSMC"
+                                        widgetVar="statoStampaSMC"
+                                        styleClass="filtroRicercaDxContent"
+                                        value="#{visualizzazioneTicketBean.filtroStatoTicketSelezionato}"
+                                        layout="pageDirection"
+                                        >
+                                        <f:selectItems
+                                            value="#{visualizzazioneTicketBean.filtroListaStatoTicket}"
+                                            var="stato"
+                                            itemLabel="#{stato.name}"
+                                            itemValue="#{stato.code}" />
+                                    </p:selectManyCheckbox>
+                                    
+                                    
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                            
+                            <f:facet name="footer">
+                                <div class="ui-g-8" />
+    
+                                <div class="ui-g-2">
+                                    <p:commandButton
+                                        id="ricercaFiltrataCB"
+                                        widgetVar="ricercaFiltrataCB"
+                                        value="Filtra"
+                                        actionListener="#{visualizzazioneTicketCtrl.filtraTicket()}"
+                                        update="listaTicketForm:tabellaTicket"
+                                        oncomplete="PF('filtroRicercaDlg').hide()"
+                                    />
+                                </div>
+    
+                                <div class="ui-g-2">
+                                    <p:commandButton
+                                        id="annullaFiltroCB"
+                                        widgetVar="annullaFiltroCB"
+                                        value="Annulla"
+                                        onclick="PF('filtroRicercaDlg').hide()"
+                                    />
+                                </div>
+                            </f:facet>                            
+                            
+                        </p:dialog> 
+    
                     </div>
-
-                    <p:dialog
-                        id="filtroRicercaDlg"
-                        widgetVar="filtroRicercaDlg"
-                        width="500"
-                        minWidth="500"
-                        height="350"
-                        minHeight="350"
-                        header="Filtro ricerca"
-                        modal="true">
-                        
-                        <div>
-                            <div class="ui-g-4">
-                                <p:outputLabel
-                                    value="Macchina"
-                                    styleClass="filtroRicercaSxContent"
-                                />
-                            </div>
-                            <div class="ui-g-8">
-                                <p:selectOneMenu
-                                    id="macchinaSOM"
-                                    widgetVar="macchinaSOM"
-                                    autoWidth="false"
-                                    styleClass="filtroRicercaDxContent"
-                                    value="#{visualizzazioneTicketBean.filtroMacchinaSelezionata}"
-                                    >
-                                    <f:selectItem
-                                        itemLabel="Seleziona la macchina"
-                                        itemValue="-1" />
-                                    <f:selectItems
-                                        value="#{visualizzazioneTicketBean.filtroListaMacchine}"
-                                        var="macchina"
-                                        itemLabel="#{macchina.name}"
-                                        itemValue="#{macchina.id}"
-                                        />
-                                </p:selectOneMenu>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="ui-g-4">
-                                <p:outputLabel
-                                    value="Nome file"
-                                    styleClass="filtroRicercaSxContent"
-                                />
-                            </div>
-                            <div class="ui-g-8">
-                                <p:inputText
-                                    id="nomefileIT"
-                                    widgetVar="nomefileIT"
-                                    styleClass="filtroRicercaDxContent"
-                                    value="#{visualizzazioneTicketBean.filtroNomefile}"
-                                />
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="ui-g-4">
-                                <p:outputLabel
-                                    value="Tipo laser"
-                                    styleClass="filtroRicercaSxContent"
-                                />
-                            </div>
-                            <div class="ui-g-8">
-                                <p:selectOneMenu
-                                    id="tipoLaserSOM"
-                                    widgetVar="tipoLaserSOM"
-                                    autoWidth="false"
-                                    styleClass="filtroRicercaDxContent"
-                                    value="#{visualizzazioneTicketBean.filtroLaserKindSelezionato}"
-                                    >
-                                    <f:selectItem
-                                        itemLabel="Seleziona il laser"
-                                        itemValue="-255" />
-                                    <f:selectItems
-                                        value="#{visualizzazioneTicketBean.filtroListaLaserKind}"
-                                        var="item"
-                                        itemLabel="#{item.name}"
-                                        itemValue="#{item.code}"
-                                        />
-                                </p:selectOneMenu>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="ui-g-4">
-                                <p:outputLabel
-                                    value="Da"
-                                    for="DaCAL"
-                                    styleClass="filtroRicercaSxContent"
-                                />
-                            </div>
-                            <div class="ui-g-8">
-                                <p:calendar
-                                    id="DaCAL"
-                                    widgetVar="DaCAL"
-                                    pattern="dd/MM/yyyy"
-                                    styleClass="filtroRicercaDxCalendarContent"
-                                    value="#{visualizzazioneTicketBean.filtroDataDa}"
-                                />
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="ui-g-4">
-                                <p:outputLabel
-                                    value="A"
-                                    for="ACAL"
-                                    styleClass="filtroRicercaSxContent"
-                                />
-                            </div>
-                            <div class="ui-g-8">
-                                <p:calendar
-                                    id="ACAL"
-                                    widgetVar="ACAL"
-                                    pattern="dd/MM/yyyy"
-                                    styleClass="filtroRicercaDxCalendarContent"
-                                    value="#{visualizzazioneTicketBean.filtroDataA}"
-                                />
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="ui-g-4">
-                                <p:outputLabel
-                                    value="Stato"
-                                    styleClass="filtroRicercaSxContent"
-                                />
-                            </div>
-                            <div class="ui-g-8">
-                                
-                                <p:selectManyCheckbox
-                                    id="statoStampaSMC"
-                                    widgetVar="statoStampaSMC"
-                                    styleClass="filtroRicercaDxContent"
-                                    value="#{visualizzazioneTicketBean.filtroStatoTicketSelezionato}"
-                                    layout="pageDirection"
-                                    >
-                                    <f:selectItems
-                                        value="#{visualizzazioneTicketBean.filtroListaStatoTicket}"
-                                        var="stato"
-                                        itemLabel="#{stato.name}"
-                                        itemValue="#{stato.code}" />
-                                </p:selectManyCheckbox>
-                                
-                                
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div>
-                            </div>
-                            <div>
-                            </div>
-                        </div>
-                        
-                        <f:facet name="footer">
-                            <div class="ui-g-8" />
-
-                            <div class="ui-g-2">
-                                <p:commandButton
-                                    id="ricercaFiltrataCB"
-                                    widgetVar="ricercaFiltrataCB"
-                                    value="Filtra"
-                                    actionListener="#{visualizzazioneTicketCtrl.filtraTicket()}"
-                                    update="filtroRicercaForm:tabellaTicket"
-                                    oncomplete="PF('filtroRicercaDlg').hide()"
-                                />
-                            </div>
-
-                            <div class="ui-g-2">
-                                <p:commandButton
-                                    id="annullaFiltroCB"
-                                    widgetVar="annullaFiltroCB"
-                                    value="Annulla"
-                                    onclick="PF('filtroRicercaDlg').hide()"
-                                />
-                            </div>
-                        </f:facet>                            
-                        
-                    </p:dialog> 
-
-                </div>
                 
+                </h:form>
                 
-                <!-- pannello di visualizzazione ticket -->
-                <div id="listaTicket">
-
-                    <p:dataTable
-                        id="tabellaTicket"
-                        widgetVar="tabellaTicket"
-                        value="#{visualizzazioneTicketBean.listaTicket}"
-                        var="ticket"
-                        paginator="true"
-                        rows="30"
-                        paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                        paginatorPosition="bottom"
-                        rowsPerPageTemplate="10, 20, 30, 40"
-                        selectionMode="single"
-                        selection="#{visualizzazioneTicketBean.ticketSelezionato}"
-                        lazy="true">
-                        
-                        <p:column headerText="Macchina">
-                            <h:outputText value="#{ticket.idM} #{ticket.machineName != '' ? '- '+=ticket.machineName : ''}" />
-                        </p:column>
-                        <p:column headerText="Work ID">
-                            <h:outputText value="#{ticket.idT}" />
-                        </p:column>
-                        <p:column headerText="Nome file">
-                            <h:outputText value="#{ticket.fileName}" />
-                        </p:column>
-                        <p:column headerText="Tipo laser">
-                            <h:outputText value="#{ticket.laserKind.name}" />
-                        </p:column>
-                        <p:column headerText="Inizio stampa">
-                            <h:outputText value="#{ticket.printStartAt}" />
-                        </p:column>
-                        <p:column headerText="Fine stampa">
-                            <h:outputText value="#{ticket.printStopAt}" />
-                        </p:column>
-                        <p:column headerText="Stato">
-                            <h:outputText value="#{ticket.printStatus}" />
-                        </p:column>
-                        <p:column headerText="Dettagli" style="width:40px; text-align: center">
-                             <p:commandButton
-                                title="View">
-                                icon="ui-icon-search"
-                                <f:setPropertyActionListener
-                                    value=""
-                                    target="" />
-                            </p:commandButton>
-                        </p:column>
-                    </p:dataTable>
-                </div>
+            </div>
             
-            </h:form>
+            <div class="ui-g-12">
+                
+                <h:form id="listaTicketForm">    
+                    
+                    <!-- pannello di visualizzazione ticket -->
+                    <div id="listaTicket">
+    
+                        <p:dataTable
+                            id="tabellaTicket"
+                            widgetVar="tabellaTicket"
+                            value="#{visualizzazioneTicketBean.listaTicket}"
+                            var="ticket"
+                            paginator="true"
+                            rows="#{visualizzazioneTicketBean.righePerPagina}"
+                            paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                            paginatorPosition="bottom"
+                            rowsPerPageTemplate="10, 20, 30, 40"
+                            selectionMode="single"
+                            selection="#{visualizzazioneTicketBean.ticketSelezionato}"
+                            lazy="true">
+                            
+                            <p:column headerText="Macchina">
+                                <h:outputText value="#{ticket.idM} #{ticket.machineName != '' ? '- '+=ticket.machineName : ''}" />
+                            </p:column>
+                            <p:column headerText="Work ID">
+                                <h:outputText value="#{ticket.idT}" />
+                            </p:column>
+                            <p:column headerText="Nome file" style="width: 30%">
+                                <h:outputText value="#{ticket.fileName}" />
+                            </p:column>
+                            <p:column headerText="Tipo laser" style="width: 60px">
+                                <h:outputText value="#{ticket.laserKind.name}" />
+                            </p:column>
+                            <p:column headerText="Inizio stampa">
+                                <h:outputText value="#{ticket.printStartAt}">
+                                    <f:convertDateTime pattern = "dd/MM/YYYY - HH:mm:ss" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fine stampa">
+                                <h:outputText value="#{ticket.printStopAt}">
+                                    <f:convertDateTime pattern = "dd/MM/YYYY - HH:mm:ss" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Stato">
+                                <h:outputText value="#{ticket.printStatus}" />
+                            </p:column>
+                            
+                            <p:column headerText="Dettagli" style="width:40px; text-align: center">
+                                 <p:commandButton
+                                    icon="ui-icon-dettaglio-ticket"
+                                    title="View">
+                                    <f:setPropertyActionListener
+                                        value="#{visualizzazioneTicketBean.ticketSelezionato}"
+                                        target="#{ticket}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                
+                </h:form>
+
+            </div>
 
         </div>
 

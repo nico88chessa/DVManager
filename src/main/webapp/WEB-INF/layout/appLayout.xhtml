@@ -28,16 +28,16 @@
 
         <div class="ui-g-12">
 
-            <div class="ui-g-2">
-                <div id="left">
-                    <h:form>
-                        <p:menu>
-                            <p:menuitem id="menuGestioneMacchine" value="Gestione Macchine" action="gestioneMacchineAction" />
-                            <p:menuitem id="menuVisualizzazioneTicket" value="Visualizzazione Ticket" action="visualizzazioneTicketAction" />
-                        </p:menu>
-                    </h:form>
-                    <ui:insert name="left" />
-                </div>
+            <div id="leftMenu" class="ui-g-2">
+                
+                <h:form id="menuButtonForm">
+                    <p:menu>
+                        <p:menuitem id="menuGestioneMacchine" value="Gestione Macchine" action="gestioneMacchineAction" />
+                        <p:menuitem id="menuVisualizzazioneTicket" value="Visualizzazione Ticket" action="visualizzazioneTicketAction" />
+                    </p:menu>
+                </h:form>
+                <ui:insert name="left" />
+            
             </div>
 
             <div class="ui-g-10">

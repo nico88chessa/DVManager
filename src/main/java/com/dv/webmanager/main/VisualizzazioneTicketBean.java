@@ -5,7 +5,6 @@ import java.util.List;
 import org.primefaces.model.LazyDataModel;
 
 import com.dv.webmanager.db.bean.Machine;
-import com.dv.webmanager.db.bean.Ticket;
 import com.dv.webmanager.main.Constants.LaserKind;
 import com.dv.webmanager.main.Constants.PrintStatus;
 
@@ -25,7 +24,10 @@ public class VisualizzazioneTicketBean {
 
     // attributi lista ticket
     private LazyDataModel<WebTicket> listaTicket;
-    private Ticket ticketSelezionato;
+    private WebTicket ticketSelezionato;
+
+    // attributi tabella lista ticket
+    private int righePerPagina;
 
 
     // getters e setters
@@ -89,11 +91,17 @@ public class VisualizzazioneTicketBean {
     public void setListaTicket(LazyDataModel<WebTicket> listaTicket) {
         this.listaTicket = listaTicket;
     }
-    public Ticket getTicketSelezionato() {
+    public WebTicket getTicketSelezionato() {
         return ticketSelezionato;
     }
-    public void setTicketSelezionato(Ticket ticketSelezionato) {
+    public void setTicketSelezionato(WebTicket ticketSelezionato) {
         this.ticketSelezionato = ticketSelezionato;
+    }
+    public int getRighePerPagina() {
+        return righePerPagina;
+    }
+    public void setRighePerPagina(int righePerPagina) {
+        this.righePerPagina = righePerPagina;
     }
 
 }

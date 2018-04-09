@@ -54,6 +54,10 @@ public class LazyTicketDataModel extends LazyDataModel<WebTicket> {
                 (first >= (lastDBStartIndex + this.lastDBPageSize*(PAGE_SIZE_BUFFER)) ) ||
                 (first < lastDBStartIndex) ) {  // oppure l'indice della pagina non e' compreso nel buffer
 
+            // questo serve per gestire il caso di filtraggio quando ho gia' cambiato pagina
+            if (this.lastDBPageSize == -1)
+                first = 0;
+
             // faccio la query a DB
             this.lastDBPageSize = pageSize;
             this.lastDBBufferSize = this.lastDBPageSize * PAGE_SIZE_BUFFER;

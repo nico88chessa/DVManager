@@ -42,6 +42,8 @@ public class VisualizzazioneTicketCtrl {
 
         visualizzazioneTicketBean.setFiltroStatoTicketSelezionato(new int[]{});
 
+        visualizzazioneTicketBean.setRighePerPagina(20);
+
         filtraTicket();
 
     }
