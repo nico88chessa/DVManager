@@ -72,23 +72,23 @@
     </select>
     
     <select id="selectTicketCount" resultType="int">
-        <bind name="filenameStr" value="'%' + &quot; + filename + &quot; + '%'" />
         SELECT COUNT(*) FROM PRINT_TICKET
         <where>
             <if test="idMachine != -1">
                 ID_M = #{idMachine}
             </if>
             <if test="filename != null">
+                <bind name="filenameStr" value="'%' + filename + '%'" />
                 AND FILE_NAME LIKE #{filenameStr}
             </if>
             <if test="dateStart != null">
                 <![CDATA[
-                AND PRINT_START_AT >= #{dateStart}
+                AND CAST(PRINT_START_AT AS DATE) >= #{dateStart}
                 ]]>
             </if>
             <if test="dateEnd != null">
                 <![CDATA[
-                AND PRINT_START_AT <= #{dateEnd}
+                AND CAST(PRINT_START_AT AS DATE) <= #{dateEnd}
                 ]]>
             </if>
             <if test="laserKind != -255">
@@ -102,26 +102,27 @@
                 </foreach>
             </if>
         </where>
+        ORDER BY PRINT_START_AT DESC
     </select>
 
     <select id="selectTicket" parameterType="TicketFilter" resultMap="Ticket">
-        <bind name="filenameStr" value="'%' + &quot; + filename + &quot; + '%'" />
         SELECT * FROM PRINT_TICKET
         <where>
             <if test="idMachine != -1">
                 ID_M = #{idMachine}
             </if>
             <if test="filename != null">
+                <bind name="filenameStr" value="'%' + filename + '%'" />
                 AND FILE_NAME LIKE #{filenameStr}
             </if>
             <if test="dateStart != null">
                 <![CDATA[
-                AND PRINT_START_AT >= #{dateStart}
+                AND CAST(PRINT_START_AT AS DATE) >= #{dateStart}
                 ]]>
             </if>
             <if test="dateEnd != null">
                 <![CDATA[
-                AND PRINT_START_AT <= #{dateEnd}
+                AND CAST(PRINT_START_AT AS DATE) <= #{dateEnd}
                 ]]>
             </if>
             <if test="laserKind != -255">
@@ -135,26 +136,27 @@
                 </foreach>
             </if>
         </where>
+        ORDER BY PRINT_START_AT DESC
     </select>
     
     <select id="selectTicketLimit" parameterType="map" resultMap="Ticket">
-        <bind name="filenameStr" value="'%' + &quot; + ticketFilter.filename + &quot; + '%'" />
         SELECT * FROM PRINT_TICKET
         <where>
             <if test="ticketFilter.idMachine != -1">
                 ID_M = #{ticketFilter.idMachine}
             </if>
             <if test="ticketFilter.filename != null">
+                <bind name="filenameStr" value="'%' + ticketFilter.filename + '%'" />
                 AND FILE_NAME LIKE #{filenameStr}
             </if>
             <if test="ticketFilter.dateStart != null">
                 <![CDATA[
-                AND PRINT_START_AT >= #{ticketFilter.dateStart}
+                AND CAST(PRINT_START_AT AS DATE) >= #{ticketFilter.dateStart}
                 ]]>
             </if>
             <if test="ticketFilter.dateEnd != null">
                 <![CDATA[
-                AND PRINT_START_AT <= #{ticketFilter.dateEnd}
+                AND CAST(PRINT_START_AT AS DATE) <= #{ticketFilter.dateEnd}
                 ]]>
             </if>
             <if test="ticketFilter.laserKind != -255">
@@ -168,6 +170,7 @@
                 </foreach>
             </if>
         </where>
+        ORDER BY PRINT_START_AT DESC
         LIMIT #{count} OFFSET #{offset}
     </select>
     

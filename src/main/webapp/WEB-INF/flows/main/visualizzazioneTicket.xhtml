@@ -289,13 +289,16 @@
                         >
                         <f:facet name="header">
                             <div class="ui-g-12">
-                                <p:outputLabel value="Dettaglio ticket - #{visualizzazioneTicketBean.ticketSelezionato.fileName}"/>
+                                <p:outputLabel value="#{visualizzazioneTicketBean.ticketSelezionato.machineName} - #{visualizzazioneTicketBean.ticketSelezionato.fileName}"/>
                             </div>
                         </f:facet>
                         
                         
                         
                         <!-- informazioni file -->
+                        <div class="subTitleListaTicketDLG" >
+                            <p:outputLabel value="Informazioni immagine" />
+                        </div>
                         <div style="float: left;">
                             <div class="labelWidth">
                                 <p:outputLabel value="Lunghezza [mm]" styleClass="outputLabelStyle" />
@@ -420,8 +423,10 @@
                                 <p:inputText
                                     value="#{visualizzazioneTicketBean.ticketSelezionato.fileTotalsizex}"
                                     readonly="true"
-                                    styleClass="inputTextStyle"
-                                    />
+                                    styleClass="inputTextStyle">
+                                    <f:convertNumber maxIntegerDigits="10" maxFractionDigits="2" groupingUsed="false" />
+                                </p:inputText>
+                                   
                             </div>
                             <div class="labelWidth">
                                 <p:outputLabel value="Altezza [mm]" />
@@ -430,8 +435,9 @@
                                 <p:inputText
                                     value="#{visualizzazioneTicketBean.ticketSelezionato.fileTotalsizey}"
                                     readonly="true"
-                                    styleClass="inputTextStyle"
-                                    />
+                                    styleClass="inputTextStyle">
+                                    <f:convertNumber maxIntegerDigits="10" maxFractionDigits="2" groupingUsed="false" />
+                                </p:inputText>
                             </div>
                         </div>
                         
