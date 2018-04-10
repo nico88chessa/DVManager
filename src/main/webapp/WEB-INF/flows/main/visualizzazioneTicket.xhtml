@@ -195,7 +195,7 @@
                                         widgetVar="ricercaFiltrataCB"
                                         value="Filtra"
                                         actionListener="#{visualizzazioneTicketCtrl.filtraTicket()}"
-                                        update="listaTicketForm:tabellaTicket"
+                                        update="listaTicketForm:tabellaTicketDT"
                                         oncomplete="PF('filtroRicercaDlg').hide()"
                                     />
                                 </div>
@@ -226,8 +226,8 @@
                     <div id="listaTicket">
     
                         <p:dataTable
-                            id="tabellaTicket"
-                            widgetVar="tabellaTicket"
+                            id="tabellaTicketDT"
+                            widgetVar="tabellaTicketDT"
                             value="#{visualizzazioneTicketBean.listaTicket}"
                             var="ticket"
                             paginator="true"
@@ -235,8 +235,6 @@
                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                             paginatorPosition="bottom"
                             rowsPerPageTemplate="10, 20, 30, 40"
-                            selectionMode="single"
-                            selection="#{visualizzazioneTicketBean.ticketSelezionato}"
                             lazy="true">
                             
                             <p:column headerText="Macchina">
@@ -248,7 +246,7 @@
                             <p:column headerText="Nome file" style="width: 30%">
                                 <h:outputText value="#{ticket.fileName}" />
                             </p:column>
-                            <p:column headerText="Tipo laser" style="width: 60px">
+                            <p:column headerText="Tipo laser" style="width: 70px">
                                 <h:outputText value="#{ticket.laserKind.name}" />
                             </p:column>
                             <p:column headerText="Inizio stampa">
@@ -262,20 +260,451 @@
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="Stato">
-                                <h:outputText value="#{ticket.printStatus}" />
+                                <h:outputText value="#{ticket.printStatus.name}" />
                             </p:column>
                             
-                            <p:column headerText="Dettagli" style="width:40px; text-align: center">
+                            <p:column headerText="Dettagli" style="width:60px; text-align: center">
                                  <p:commandButton
                                     icon="ui-icon-dettaglio-ticket"
-                                    title="View">
+                                    title="Dettagli"
+                                    update="listaTicketForm:dettaglioTicketDLG"
+                                    oncomplete="PF('dettaglioTicketDLG').show()"
+                                    >
                                     <f:setPropertyActionListener
-                                        value="#{visualizzazioneTicketBean.ticketSelezionato}"
-                                        target="#{ticket}" />
+                                        value="#{ticket}"
+                                        target="#{visualizzazioneTicketBean.ticketSelezionato}" />
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
                     </div>
+                    
+                    <!-- dialog per visualizzare il dettaglio del ticket -->
+                    <p:dialog
+                        id="dettaglioTicketDLG"
+                        widgetVar="dettaglioTicketDLG"
+                        header="Dettaglio Ticket"
+                        width="1250px"
+                        resizable="false"
+                        modal="true"
+                        >
+                        <f:facet name="header">
+                            <div class="ui-g-12">
+                                <p:outputLabel value="Dettaglio ticket - #{visualizzazioneTicketBean.ticketSelezionato.fileName}"/>
+                            </div>
+                        </f:facet>
+                        
+                        
+                        
+                        <!-- informazioni file -->
+                        <div style="float: left;">
+                            <div class="labelWidth">
+                                <p:outputLabel value="Lunghezza [mm]" styleClass="outputLabelStyle" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileLength}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Altezza [mm]" styleClass="outputLabelStyle" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileHeight}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="Lunghezza [px]" styleClass="outputLabelStyle" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.filePixelX}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Altezza [px]" styleClass="outputLabelStyle" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.filePixelY}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="Risoluzione X [l/cm]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileResolutionX}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Risoluzione Y [l/cm]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileResolutionY}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="Risoluzione X [dpi]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileResolutionX * 2.54}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Risoluzione Y [dpi]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileResolutionX * 2.54}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- informazioni stampa  -->
+                        <div class="subTitleListaTicketDLG" >
+                            <p:outputLabel value="Informazioni stampa" />
+                        </div>
+                        <div style="float: left;">
+                            <div class="labelWidth">
+                                <p:outputLabel value="Lunghezza [px]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileTotalpixelX}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Altezza [px]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileTotalpixelY}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="Lunghezza [mm]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileTotalsizex}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Altezza [mm]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.fileTotalsizey}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <!-- Informazioni cilindro  -->
+                        <div class="subTitleListaTicketDLG" >
+                            <p:outputLabel value="Informazioni cilindro" />
+                        </div>
+                        <div style="float: left;">
+                            <div class="labelWidth">
+                                <p:outputLabel value="Lunghezza [mm]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.cylinderLength}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Diametro [mm]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.cylinderDiameter}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="Start at [mm]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.cylinderStartAt}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Cross at [mm]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.cylinderCrossAt}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <!--   Informazioni laser   -->
+                        <div class="subTitleListaTicketDLG" >
+                            <p:outputLabel value="Informazioni laser" />
+                        </div>
+                        <div style="float: left;">
+                            <div class="labelWidth">
+                                <p:outputLabel value="Tipo" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.laserKind.name}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="N. sorgenti" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.laserSources}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="Potenza min. [us]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.laserMinPower}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Potenza max. [us]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.laserMaxPower}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="N. spari" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.laserShots}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Periodo [us]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.laserPeriod}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        </div>
+                        
+                        
+                        <!--   Informazioni ticket   -->
+                        <div class="subTitleListaTicketDLG" >
+                            <p:outputLabel value="Informazioni ticket" />
+                        </div>
+                        <div style="float: left;">
+                            <div class="labelWidth">
+                                <p:outputLabel value="Calibrazione attiva" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:selectBooleanCheckbox
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.setupCalibration == 1}"
+                                    disabled="true"
+                                    />
+                                
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Velocita' [RPM]" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.setupSpeed}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth2">
+                                <p:outputLabel value="Offset X [mm]" />
+                            </div>
+                            <div class="fieldWidth2">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.setupOffsetX}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth2">
+                                <p:outputLabel value="Offset Y [mm]" />
+                            </div>
+                            <div class="fieldWidth2">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.setupOffsetY}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth2">
+                                <p:outputLabel value="Z position [mm]" />
+                            </div>
+                            <div class="fieldWidth2">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.setupZPosition}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="Data inizio stampa" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.printStartAt}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    >
+                                    <f:convertDateTime pattern = "dd/MM/YYYY - HH:mm:ss" />
+                                </p:inputText>
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Data fine stampa" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.printStopAt}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    >
+                                    <f:convertDateTime pattern = "dd/MM/YYYY - HH:mm:ss" />
+                                </p:inputText>
+                            </div>
+                        
+                        
+                            <div class="labelWidth">
+                                <p:outputLabel value="Stato" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.printStatus.name}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Descrizione errore" />
+                            </div>
+                            <div class="fieldWidth">
+                                <p:inputText
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.printError}"
+                                    readonly="true"
+                                    styleClass="inputTextStyle"
+                                    />
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="labelWidth">
+                                <p:outputLabel value="Note" />
+                            </div>
+                            <div style="float:left;" >
+                                <p:inputTextarea
+                                    id="noteITA"
+                                    widgetVar="noteITA"
+                                    maxlength="255"
+                                    autoResize="false"
+                                    style="width: 800px; height: 60px"
+                                    />
+                            </div>
+                        </div>
+                        
+                        
+                        <f:facet name="footer">
+                            <div class="ui-g-8" />
+    
+                                <div class="ui-g-2">
+                                    <p:commandButton
+                                        id="chiudiDettaglioDB"
+                                        widgetVar="chiudiDettaglioDB"
+                                        value="Chiudi"
+                                        oncomplete="PF('dettaglioTicketDLG').hide()"
+                                    />
+                                </div>
+    
+                                <div class="ui-g-2">
+                                    <p:commandButton
+                                        id="salvaEChiudiDettaglioDB"
+                                        widgetVar="salvaEChiudiDettaglioDB"
+                                        value="Salva e chiudi"
+                                        oncomplete="PF('dettaglioTicketDLG').hide()"
+                                    />
+                                </div>
+                        </f:facet>
+                    </p:dialog>
                 
                 </h:form>
 

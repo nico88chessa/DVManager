@@ -83,11 +83,28 @@ public class LazyTicketDataModel extends LazyDataModel<WebTicket> {
     }
 
     public WebTicket getRowData(String rowKey) {
-        return null;
+
+        if (rowKey==null || rowKey.isEmpty())
+            return new WebTicket();
+
+        for (Ticket ticket: listaTicket)
+            if (getTicketKey(ticket).equals(rowKey))
+                return getWebTicketFromTicket(ticket);
+
+        return new WebTicket();
+
     }
 
     public Object getRowKey(WebTicket ticket) {
-        return null;
+        return this.getTicketKey(ticket);
+    }
+
+    private String getTicketKey(Ticket ticket) {
+        return ticket.getIdM()+"-"+ticket.getIdT();
+    }
+
+    private String getTicketKey(WebTicket ticket) {
+        return ticket.getIdM()+"-"+ticket.getIdT();
     }
 
     private WebTicket getWebTicketFromTicket(Ticket ticket) {

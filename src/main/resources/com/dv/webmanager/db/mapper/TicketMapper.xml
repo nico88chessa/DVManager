@@ -95,7 +95,7 @@
                 AND LASER_KIND = #{laserKind}
             </if>
             
-            <if test="printStatus.length != 0">
+            <if test="printStatus!=null and printStatus.length != 0">
                 AND PRINT_STATUS IN
                 <foreach item="item" collection="printStatus" separator="," open="(" close=")">
                     (#{item})
@@ -128,7 +128,7 @@
                 AND LASER_KIND = #{laserKind}
             </if>
             
-            <if test="printStatus.length != 0">
+            <if test="printStatus!=null and printStatus.length != 0">
                 AND PRINT_STATUS IN
                 <foreach item="item" collection="printStatus" separator="," open="(" close=")">
                     (#{item})
@@ -138,14 +138,14 @@
     </select>
     
     <select id="selectTicketLimit" parameterType="map" resultMap="Ticket">
-        <bind name="filenameStr" value="'%' + &quot; + filename + &quot; + '%'" />
+        <bind name="filenameStr" value="'%' + &quot; + ticketFilter.filename + &quot; + '%'" />
         SELECT * FROM PRINT_TICKET
         <where>
             <if test="ticketFilter.idMachine != -1">
                 ID_M = #{ticketFilter.idMachine}
             </if>
             <if test="ticketFilter.filename != null">
-                AND FILE_NAME LIKE #{ticketFilter.filenameStr}
+                AND FILE_NAME LIKE #{filenameStr}
             </if>
             <if test="ticketFilter.dateStart != null">
                 <![CDATA[
@@ -161,7 +161,7 @@
                 AND LASER_KIND = #{ticketFilter.laserKind}
             </if>
             
-            <if test="ticketFilter.printStatus.length != 0">
+            <if test="ticketFilter.printStatus!=null and ticketFilter.printStatus.length != 0">
                 AND PRINT_STATUS IN
                 <foreach item="item" collection="ticketFilter.printStatus" separator="," open="(" close=")">
                     (#{item})

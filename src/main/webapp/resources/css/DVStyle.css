@@ -94,3 +94,43 @@ div #leftMenu {
 .filtroRicercaDxCalendarContent input {
     width: 240px;
 }
+
+.labelWidth {
+	width: 200px;
+	float: left;
+	padding: 10px 0px 4px 0px;
+}
+
+.fieldWidth {
+    width: 400px;
+    float: left;
+    padding: 4px 0px 4px 0px;
+}
+
+.labelWidth2 {
+    float: left;
+    padding: 10px 10px 4px 0px;
+}
+
+.fieldWidth2 {
+    float: left;
+    padding: 4px 10px 4px 0px;
+}
+
+.outputLabelStyle {
+    width: 330px;
+}
+
+.inputTextStyle {
+	width: 250px;
+}
+
+.subTitleListaTicketDLG {
+	float: left;
+	width: 100%;
+	padding: 10px 0px 10px 0px;
+	text-align: center;
+	background: linear-gradient(to top, #C4C4C4, #FFFFFF);
+	border: 1px solid gray;
+	font-weight: 700; 
+}

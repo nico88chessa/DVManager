@@ -3,6 +3,11 @@ package com.dv.webmanager.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.datatable.DataTable;
+
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
 import com.dv.webmanager.db.bean.Machine;
 import com.dv.webmanager.db.bean.TicketFilter;
@@ -12,8 +17,12 @@ import com.dv.webmanager.main.Constants.PrintStatus;
 
 public class VisualizzazioneTicketCtrl {
 
+    private static final int NO_MACHINE = -1;
+
     public void init() {
         VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
+        GestioneMacchineBean gestioneMacchinaBean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
 
         this.aggiornaListaMacchineFiltro();
 
@@ -37,14 +46,22 @@ public class VisualizzazioneTicketCtrl {
         visualizzazioneTicketBean.setFiltroDataA(null);
         visualizzazioneTicketBean.setFiltroListaStatoTicket(listaTicketStatus);
 
-        visualizzazioneTicketBean.setFiltroMacchinaSelezionata(-1);
+        visualizzazioneTicketBean.setFiltroMacchinaSelezionata(NO_MACHINE);
         visualizzazioneTicketBean.setFiltroLaserKindSelezionato(LaserKind.NONE.getCode());
 
         visualizzazioneTicketBean.setFiltroStatoTicketSelezionato(new int[]{});
-
         visualizzazioneTicketBean.setRighePerPagina(20);
 
-        filtraTicket();
+        // inizialmente faccio vedere la lista dei ticket non filtrata
+        TicketFilter filtro = new TicketFilter();
+        filtro.setIdMachine(NO_MACHINE);
+        filtro.setFilename(null);
+        filtro.setDateStart(null);
+        filtro.setDateEnd(null);
+        filtro.setLaserKind(LaserKind.NONE.getCode());
+        filtro.setPrintStatus(null);
+        LazyTicketDataModel lazyTicketList = new LazyTicketDataModel(gestioneMacchinaBean, mapper, filtro);
+        visualizzazioneTicketBean.setListaTicket(lazyTicketList);
 
     }
 
@@ -80,6 +97,12 @@ public class VisualizzazioneTicketCtrl {
         LazyTicketDataModel lazyTicketList = new LazyTicketDataModel(gestioneMacchinaBean, mapper, filtro);
 
         visualizzazioneTicketBean.setListaTicket(lazyTicketList);
+
+        // qui resetto l'indice della tabella a 0 (faccio partire la tabella dall'inizio)
+        UIViewRoot root = FacesContext.getCurrentInstance().getViewRoot();
+        DataTable dataTable;
+        dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("listaTicketForm:tabellaTicketDT");
+        dataTable.reset();
     }
 
 }
