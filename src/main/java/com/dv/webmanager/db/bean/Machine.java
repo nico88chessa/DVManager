@@ -8,7 +8,8 @@ public class Machine {
     private String name;
     private Date lastUpdate;
     private String ip;
-    
+    private boolean toDelete;
+
     public int getId() {
         return id;
     }
@@ -33,5 +34,11 @@ public class Machine {
     public void setIp(String ip) {
         this.ip = ip;
     }
-    
+    public boolean getToDelete() {
+        return toDelete;
+    }
+    public void setToDelete(boolean toDelete) {
+        this.toDelete = toDelete;
+    }
+
 }

@@ -12,8 +12,6 @@ import org.mybatis.spring.MyBatisSystemException;
 
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
 import com.dv.webmanager.db.bean.Machine;
-import com.dv.webmanager.db.bean.Ticket;
-import com.dv.webmanager.db.bean.TicketFilter;
 import com.dv.webmanager.db.mapper.TicketMapper;
 
 public class GestioneMacchineCtrl {
@@ -125,19 +123,6 @@ public class GestioneMacchineCtrl {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
         }
-
-    }
-
-
-    // metodi utilizzati nella pagine di ricerca stampe
-    public void filtraTicket() {
-        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
-
-        TicketFilter ticketFilter = new TicketFilter();
-
-        List<Ticket> tickets = mapper.selectTicket(ticketFilter);
-
-        System.out.println(tickets.size());
 
     }
 

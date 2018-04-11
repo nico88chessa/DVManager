@@ -52,7 +52,8 @@
         <id column="ID" property="id" />
         <id column="NAME" property="name" />
         <id column="LAST_UPDATE" property="lastUpdate" />
-        <id column="IP" property="ip" />    
+        <id column="IP" property="ip" />
+        <id column="TO_DELETE" property="toDelete" />
     </resultMap>
     
     <!-- QUERY -->
@@ -63,120 +64,135 @@
     </insert>
 
     <delete id="deleteMachine" parameterType="Machine" flushCache="true">
-        DELETE FROM MACHINE
+        UPDATE MACHINE
+        SET TO_DELETE = TRUE
         WHERE MACHINE.ID = #{id}
     </delete>
-    
     
     <update id="updateNoteTicket" parameterType="Machine" flushCache="true">
         UPDATE PRINT_TICKET
         SET NOTES = #{notes}
-        WHERE ID_M = #{idM} AND ID_T = #{idT} 
+        WHERE ID_M = #{idM} AND ID_T = #{idT}
     </update>
     
     <select id="selectMachine" resultMap="Machine">
         SELECT * FROM MACHINE
+        WHERE TO_DELETE = FALSE
+    </select>
+    
+    <select id="selectMachineCount" resultType="int">
+        SELECT COUNT(*) FROM MACHINE
+        WHERE TO_DELETE = FALSE
     </select>
     
     <select id="selectTicketCount" resultType="int">
         SELECT COUNT(*) FROM PRINT_TICKET
-        <where>
-            <if test="idMachine != -1">
-                ID_M = #{idMachine}
-            </if>
-            <if test="filename != null">
-                <bind name="filenameStr" value="'%' + filename + '%'" />
-                AND FILE_NAME LIKE #{filenameStr}
-            </if>
-            <if test="dateStart != null">
-                <![CDATA[
-                AND CAST(PRINT_START_AT AS DATE) >= #{dateStart}
-                ]]>
-            </if>
-            <if test="dateEnd != null">
-                <![CDATA[
-                AND CAST(PRINT_START_AT AS DATE) <= #{dateEnd}
-                ]]>
-            </if>
-            <if test="laserKind != -255">
-                AND LASER_KIND = #{laserKind}
-            </if>
-            
-            <if test="printStatus!=null and printStatus.length != 0">
-                AND PRINT_STATUS IN
-                <foreach item="item" collection="printStatus" separator="," open="(" close=")">
-                    (#{item})
-                </foreach>
-            </if>
-        </where>
+        WHERE ID_M IN (SELECT ID FROM MACHINE WHERE TO_DELETE=FALSE)
+        AND ID_M IN
+        <foreach item="machine" collection="machineList" separator="," open="(" close=")">
+            (#{machine.id})
+        </foreach>
+        <if test="idMachine != -1">
+            AND ID_M = #{idMachine}
+        </if>
+        <if test="filename != null">
+            <bind name="filenameStr" value="'%' + filename + '%'" />
+            AND FILE_NAME LIKE #{filenameStr}
+        </if>
+        <if test="dateStart != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) >= #{dateStart}
+            ]]>
+        </if>
+        <if test="dateEnd != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) <= #{dateEnd}
+            ]]>
+        </if>
+        <if test="laserKind != -255">
+            AND LASER_KIND = #{laserKind}
+        </if>
+        
+        <if test="printStatus!=null and printStatus.length != 0">
+            AND PRINT_STATUS IN
+            <foreach item="item" collection="printStatus" separator="," open="(" close=")">
+                (#{item})
+            </foreach>
+        </if>
         ORDER BY PRINT_START_AT DESC
     </select>
 
     <select id="selectTicket" parameterType="TicketFilter" resultMap="Ticket">
         SELECT * FROM PRINT_TICKET
-        <where>
-            <if test="idMachine != -1">
-                ID_M = #{idMachine}
-            </if>
-            <if test="filename != null">
-                <bind name="filenameStr" value="'%' + filename + '%'" />
-                AND FILE_NAME LIKE #{filenameStr}
-            </if>
-            <if test="dateStart != null">
-                <![CDATA[
-                AND CAST(PRINT_START_AT AS DATE) >= #{dateStart}
-                ]]>
-            </if>
-            <if test="dateEnd != null">
-                <![CDATA[
-                AND CAST(PRINT_START_AT AS DATE) <= #{dateEnd}
-                ]]>
-            </if>
-            <if test="laserKind != -255">
-                AND LASER_KIND = #{laserKind}
-            </if>
-            
-            <if test="printStatus!=null and printStatus.length != 0">
-                AND PRINT_STATUS IN
-                <foreach item="item" collection="printStatus" separator="," open="(" close=")">
-                    (#{item})
-                </foreach>
-            </if>
-        </where>
+        WHERE ID_M IN (SELECT ID FROM MACHINE WHERE TO_DELETE=FALSE)
+        AND ID_M IN
+        <foreach item="machine" collection="machineList" separator="," open="(" close=")">
+            (#{machine.id})
+        </foreach>
+        <if test="idMachine != -1">
+            AND ID_M = #{idMachine}
+        </if>
+        <if test="filename != null">
+            <bind name="filenameStr" value="'%' + filename + '%'" />
+            AND FILE_NAME LIKE #{filenameStr}
+        </if>
+        <if test="dateStart != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) >= #{dateStart}
+            ]]>
+        </if>
+        <if test="dateEnd != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) <= #{dateEnd}
+            ]]>
+        </if>
+        <if test="laserKind != -255">
+            AND LASER_KIND = #{laserKind}
+        </if>
+        
+        <if test="printStatus!=null and printStatus.length != 0">
+            AND PRINT_STATUS IN
+            <foreach item="item" collection="printStatus" separator="," open="(" close=")">
+                (#{item})
+            </foreach>
+        </if>
         ORDER BY PRINT_START_AT DESC
     </select>
     
     <select id="selectTicketLimit" parameterType="map" resultMap="Ticket">
         SELECT * FROM PRINT_TICKET
-        <where>
-            <if test="ticketFilter.idMachine != -1">
-                ID_M = #{ticketFilter.idMachine}
-            </if>
-            <if test="ticketFilter.filename != null">
-                <bind name="filenameStr" value="'%' + ticketFilter.filename + '%'" />
-                AND FILE_NAME LIKE #{filenameStr}
-            </if>
-            <if test="ticketFilter.dateStart != null">
-                <![CDATA[
-                AND CAST(PRINT_START_AT AS DATE) >= #{ticketFilter.dateStart}
-                ]]>
-            </if>
-            <if test="ticketFilter.dateEnd != null">
-                <![CDATA[
-                AND CAST(PRINT_START_AT AS DATE) <= #{ticketFilter.dateEnd}
-                ]]>
-            </if>
-            <if test="ticketFilter.laserKind != -255">
-                AND LASER_KIND = #{ticketFilter.laserKind}
-            </if>
-            
-            <if test="ticketFilter.printStatus!=null and ticketFilter.printStatus.length != 0">
-                AND PRINT_STATUS IN
-                <foreach item="item" collection="ticketFilter.printStatus" separator="," open="(" close=")">
-                    (#{item})
-                </foreach>
-            </if>
-        </where>
+        WHERE ID_M IN (SELECT ID FROM MACHINE WHERE TO_DELETE=FALSE)
+        AND ID_M IN
+        <foreach item="machine" collection="ticketFilter.machineList" separator="," open="(" close=")">
+            (#{machine.id})
+        </foreach>
+        <if test="ticketFilter.idMachine != -1">
+            AND ID_M = #{ticketFilter.idMachine}
+        </if>
+        <if test="ticketFilter.filename != null">
+            <bind name="filenameStr" value="'%' + ticketFilter.filename + '%'" />
+            AND FILE_NAME LIKE #{filenameStr}
+        </if>
+        <if test="ticketFilter.dateStart != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) >= #{ticketFilter.dateStart}
+            ]]>
+        </if>
+        <if test="ticketFilter.dateEnd != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) <= #{ticketFilter.dateEnd}
+            ]]>
+        </if>
+        <if test="ticketFilter.laserKind != -255">
+            AND LASER_KIND = #{ticketFilter.laserKind}
+        </if>
+        
+        <if test="ticketFilter.printStatus!=null and ticketFilter.printStatus.length != 0">
+            AND PRINT_STATUS IN
+            <foreach item="item" collection="ticketFilter.printStatus" separator="," open="(" close=")">
+                (#{item})
+            </foreach>
+        </if>
         ORDER BY PRINT_START_AT DESC
         LIMIT #{count} OFFSET #{offset}
     </select>

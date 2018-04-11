@@ -23,7 +23,7 @@ public class VisualizzazioneTicketCtrl {
     public void init() {
         VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
         GestioneMacchineBean gestioneMacchinaBean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
-        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+
 
         this.aggiornaListaMacchineFiltro();
 
@@ -53,8 +53,20 @@ public class VisualizzazioneTicketCtrl {
         visualizzazioneTicketBean.setFiltroStatoTicketSelezionato(new int[]{});
         visualizzazioneTicketBean.setRighePerPagina(20);
 
+    }
+
+    public void aggiornaListaMacchineFiltro() {
+        VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
+        GestioneMacchineBean gestioneMacchinaBean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+
+        List<Machine> listaMacchine = new ArrayList<Machine>();
+        listaMacchine.addAll(gestioneMacchinaBean.getListaMacchine());
+        visualizzazioneTicketBean.setFiltroListaMacchine(listaMacchine);
+
         // inizialmente faccio vedere la lista dei ticket non filtrata
         TicketFilter filtro = new TicketFilter();
+        filtro.setMachineList(visualizzazioneTicketBean.getFiltroListaMacchine());
         filtro.setIdMachine(NO_MACHINE);
         filtro.setFilename(null);
         filtro.setDateStart(null);
@@ -66,17 +78,6 @@ public class VisualizzazioneTicketCtrl {
 
         // Ticket selezionato vuoto
         visualizzazioneTicketBean.setTicketSelezionato(new WebTicket());
-
-    }
-
-    public void aggiornaListaMacchineFiltro() {
-        VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
-        GestioneMacchineBean gestioneMacchineBean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
-
-        List<Machine> listaMacchine = new ArrayList<Machine>();
-        listaMacchine.addAll(gestioneMacchineBean.getListaMacchine());
-        visualizzazioneTicketBean.setFiltroListaMacchine(listaMacchine);
-
     }
 
     public void filtraTicket() {
@@ -86,6 +87,7 @@ public class VisualizzazioneTicketCtrl {
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
 
         TicketFilter filtro = new TicketFilter();
+        filtro.setMachineList(visualizzazioneTicketBean.getFiltroListaMacchine());
         filtro.setIdMachine(visualizzazioneTicketBean.getFiltroMacchinaSelezionata());
 
         String nomefile = visualizzazioneTicketBean.getFiltroNomefile();

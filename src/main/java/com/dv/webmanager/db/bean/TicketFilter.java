@@ -1,7 +1,10 @@
 package com.dv.webmanager.db.bean;
 
+import java.util.List;
+
 public class TicketFilter {
 
+    private List<Machine> machineList;
     private int idMachine;
     private String filename;
     private java.util.Date dateStart;
@@ -9,6 +12,12 @@ public class TicketFilter {
     private int laserKind;
     private int[] printStatus;
 
+    public List<Machine> getMachineList() {
+        return machineList;
+    }
+    public void setMachineList(List<Machine> machineList) {
+        this.machineList = machineList;
+    }
     public int getIdMachine() {
         return idMachine;
     }

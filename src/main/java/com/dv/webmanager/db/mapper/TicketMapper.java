@@ -19,6 +19,8 @@ public interface TicketMapper {
 
     public List<Machine> selectMachine() throws MyBatisSystemException;
 
+    public int selectMachineCount() throws MyBatisSystemException;
+
     public int selectTicketCount(TicketFilter ticketFilter) throws MyBatisSystemException;
 
     public List<Ticket> selectTicket(TicketFilter ticketFilter) throws MyBatisSystemException;
