@@ -158,6 +158,7 @@ public class LazyTicketDataModel extends LazyDataModel<WebTicket> {
         webTicket.setPrintStatus(PrintStatus.valueFromInt(ticket.getPrintStatus()));
 
         webTicket.setPrintError(ticket.getPrintError());
+
         webTicket.setNotes(ticket.getNotes());
 
 

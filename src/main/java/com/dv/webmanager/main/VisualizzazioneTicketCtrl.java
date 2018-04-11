@@ -10,6 +10,7 @@ import org.primefaces.component.datatable.DataTable;
 
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
 import com.dv.webmanager.db.bean.Machine;
+import com.dv.webmanager.db.bean.Ticket;
 import com.dv.webmanager.db.bean.TicketFilter;
 import com.dv.webmanager.db.mapper.TicketMapper;
 import com.dv.webmanager.main.Constants.LaserKind;
@@ -63,6 +64,9 @@ public class VisualizzazioneTicketCtrl {
         LazyTicketDataModel lazyTicketList = new LazyTicketDataModel(gestioneMacchinaBean, mapper, filtro);
         visualizzazioneTicketBean.setListaTicket(lazyTicketList);
 
+        // Ticket selezionato vuoto
+        visualizzazioneTicketBean.setTicketSelezionato(new WebTicket());
+
     }
 
     public void aggiornaListaMacchineFiltro() {
@@ -100,9 +104,64 @@ public class VisualizzazioneTicketCtrl {
 
         // qui resetto l'indice della tabella a 0 (faccio partire la tabella dall'inizio)
         UIViewRoot root = FacesContext.getCurrentInstance().getViewRoot();
-        DataTable dataTable;
-        dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("listaTicketForm:tabellaTicketDT");
+        DataTable dataTable = (DataTable) root.findComponent("listaTicketForm:tabellaTicketDT");
         dataTable.reset();
+    }
+
+    public void aggiornaNoteTicket() {
+
+        VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
+
+        WebTicket ticketSelezionato = visualizzazioneTicketBean.getTicketSelezionato();
+        if (ticketSelezionato == null)
+            return;
+
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+        Ticket ticket = new Ticket();
+
+        ticket.setIdM(ticketSelezionato.getIdM());
+        ticket.setIdT(ticketSelezionato.getIdT());
+        ticket.setQueueActivated(ticketSelezionato.getQueueActivated());
+        ticket.setQueuePosition(ticketSelezionato.getQueuePosition());
+        ticket.setWorkId(ticketSelezionato.getWorkId());
+        ticket.setFileName(ticketSelezionato.getFileName());
+        ticket.setFileLength(ticketSelezionato.getFileLength());
+        ticket.setFileHeight(ticketSelezionato.getFileHeight());
+        ticket.setFilePixelX(ticketSelezionato.getFilePixelX());
+        ticket.setFilePixelY(ticketSelezionato.getFilePixelY());
+        ticket.setFileResolutionX(ticketSelezionato.getFileResolutionX());
+        ticket.setFileResolutionY(ticketSelezionato.getFileResolutionY());
+        ticket.setFileTotalpixelX(ticketSelezionato.getFileTotalpixelX());
+        ticket.setFileTotalpixelY(ticketSelezionato.getFileTotalpixelY());
+        ticket.setFileTotalsizex(ticketSelezionato.getFileTotalsizex());
+        ticket.setFileTotalsizey(ticketSelezionato.getFileTotalsizey());
+        ticket.setCylinderLength(ticketSelezionato.getCylinderLength());
+        ticket.setCylinderDiameter(ticketSelezionato.getCylinderDiameter());
+        ticket.setCylinderStartAt(ticketSelezionato.getCylinderStartAt());
+        ticket.setCylinderCrossAt(ticketSelezionato.getCylinderCrossAt());
+        ticket.setLaserKind(ticketSelezionato.getLaserKind().getCode());
+        ticket.setLaserSources(ticketSelezionato.getLaserSources());
+        ticket.setLaserMinPower(ticketSelezionato.getLaserMinPower());
+        ticket.setLaserMaxPower(ticketSelezionato.getLaserMaxPower());
+        ticket.setLaserShots(ticketSelezionato.getLaserShots());
+        ticket.setLaserPeriod(ticketSelezionato.getLaserPeriod());
+        ticket.setSetupCalibration(ticketSelezionato.getSetupCalibration());
+        ticket.setSetupOffsetX(ticketSelezionato.getSetupOffsetX());
+        ticket.setSetupOffsetY(ticketSelezionato.getSetupOffsetY());
+        ticket.setSetupZPresent(ticketSelezionato.getSetupZPresent());
+        ticket.setSetupZPosition(ticketSelezionato.getSetupZPosition());
+        ticket.setSetupFocalPresent(ticketSelezionato.getSetupFocalPresent());
+        ticket.setSetupFocalPosition(ticketSelezionato.getSetupFocalPosition());
+        ticket.setSetupSpeed(ticketSelezionato.getSetupSpeed());
+        ticket.setSetupEngravingMode(ticketSelezionato.getSetupEngravingMode());
+        ticket.setPrintStartAt(ticketSelezionato.getPrintStartAt());
+        ticket.setPrintStopAt(ticketSelezionato.getPrintStopAt());
+        ticket.setPrintStatus(ticketSelezionato.getPrintStatus().getCode());
+        ticket.setPrintError(ticketSelezionato.getPrintError());
+        ticket.setNotes(ticketSelezionato.getNotes());
+
+        mapper.updateNoteTicket(ticket);
+
     }
 
 }

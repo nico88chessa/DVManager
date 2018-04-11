@@ -67,6 +67,13 @@
         WHERE MACHINE.ID = #{id}
     </delete>
     
+    
+    <update id="updateNoteTicket" parameterType="Machine" flushCache="true">
+        UPDATE PRINT_TICKET
+        SET NOTES = #{notes}
+        WHERE ID_M = #{idM} AND ID_T = #{idT} 
+    </update>
+    
     <select id="selectMachine" resultMap="Machine">
         SELECT * FROM MACHINE
     </select>

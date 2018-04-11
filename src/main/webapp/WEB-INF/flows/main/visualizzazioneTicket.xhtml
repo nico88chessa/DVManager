@@ -683,6 +683,7 @@
                                     widgetVar="noteITA"
                                     maxlength="255"
                                     autoResize="false"
+                                    value="#{visualizzazioneTicketBean.ticketSelezionato.notes}"
                                     style="width: 800px; height: 60px"
                                     />
                             </div>
@@ -694,6 +695,14 @@
     
                                 <div class="ui-g-2">
                                     <p:commandButton
+                                        id="aggiornaNote"
+                                        widgetVar="aggiornaNote"
+                                        value="Aggiorna note"
+                                        actionListener="#{visualizzazioneTicketCtrl.aggiornaNoteTicket()}"
+                                    />
+                                </div>
+                                <div class="ui-g-2">
+                                    <p:commandButton
                                         id="chiudiDettaglioDB"
                                         widgetVar="chiudiDettaglioDB"
                                         value="Chiudi"
@@ -701,14 +710,6 @@
                                     />
                                 </div>
     
-                                <div class="ui-g-2">
-                                    <p:commandButton
-                                        id="salvaEChiudiDettaglioDB"
-                                        widgetVar="salvaEChiudiDettaglioDB"
-                                        value="Salva e chiudi"
-                                        oncomplete="PF('dettaglioTicketDLG').hide()"
-                                    />
-                                </div>
                         </f:facet>
                     </p:dialog>
                 
