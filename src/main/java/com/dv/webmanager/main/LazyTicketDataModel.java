@@ -1,6 +1,7 @@
 package com.dv.webmanager.main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,12 @@ public class LazyTicketDataModel extends LazyDataModel<WebTicket> {
 
     public List<WebTicket> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
-        // questa query la faccio sempre
+        if (filtro.getMachineList().isEmpty()) {
+            this.setRowCount(0);
+            return Collections.<WebTicket>emptyList();
+        }
+
+        // questa query la faccio sempre se c'e' almeno una macchina in DB
         int ticketCount = ticketMapper.selectTicketCount(filtro);
         this.setRowCount(ticketCount);
         listaTicket = ticketMapper.selectTicketLimit(filtro, pageSize, first);

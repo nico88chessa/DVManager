@@ -75,6 +75,13 @@
         WHERE ID_M = #{idM} AND ID_T = #{idT}
     </update>
     
+    <update id="updateMachine" parameterType="Machine" flushCache="true">
+        UPDATE MACHINE
+        SET NAME = #{name},
+        IP = #{ip}
+        WHERE ID = #{id}
+    </update>
+    
     <select id="selectMachine" resultMap="Machine">
         SELECT * FROM MACHINE
         WHERE TO_DELETE = FALSE

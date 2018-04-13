@@ -42,7 +42,4 @@ public class GestioneMacchineBean {
         this.ipRisultato = ipRisultato;
     }
 
-
-
-
 }

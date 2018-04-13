@@ -94,6 +94,25 @@ public class GestioneMacchineCtrl {
 
     }
 
+    public void modificaMacchinaInDB() {
+
+        GestioneMacchineBean bean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
+        TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
+        try {
+            mapper.updateMachine(bean.getMacchinaSelezionata());
+        } catch (MyBatisSystemException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getCause().toString(), "") );
+            return;
+        }
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.addMessage(GestioneMacchineBean.globalGrowId, new FacesMessage(FacesMessage.SEVERITY_INFO, "Macchina modificata correttamente.", "") );
+
+        this.updateMachineList();
+
+    }
+
     public void clearNewMachineValues() {
         GestioneMacchineBean bean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
         bean.setNuovaMacchina(new Machine());
