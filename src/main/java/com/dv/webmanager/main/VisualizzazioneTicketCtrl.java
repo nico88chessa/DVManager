@@ -6,7 +6,10 @@ import java.util.List;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
+import org.mybatis.spring.MyBatisSystemException;
 import org.primefaces.component.datatable.DataTable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dv.webmanager.core.ApplicationContextAwareImpl;
 import com.dv.webmanager.db.bean.Machine;
@@ -20,10 +23,14 @@ public class VisualizzazioneTicketCtrl {
 
     private static final int NO_MACHINE = -1;
 
+    private static final Logger logger = LoggerFactory.getLogger(VisualizzazioneTicketCtrl.class);
+
     public void init() {
+
+        logger.trace("Enter");
+
         VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
         GestioneMacchineBean gestioneMacchinaBean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
-
 
         this.aggiornaListaMacchineFiltro();
 
@@ -53,9 +60,14 @@ public class VisualizzazioneTicketCtrl {
         visualizzazioneTicketBean.setFiltroStatoTicketSelezionato(new int[]{});
         visualizzazioneTicketBean.setRighePerPagina(20);
 
+        logger.trace("Exit");
+
     }
 
     public void aggiornaListaMacchineFiltro() {
+
+        logger.trace("Enter");
+
         VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
         GestioneMacchineBean gestioneMacchinaBean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
         TicketMapper mapper = ApplicationContextAwareImpl.<TicketMapper>getBean("ticketMapper");
@@ -78,9 +90,14 @@ public class VisualizzazioneTicketCtrl {
 
         // Ticket selezionato vuoto
         visualizzazioneTicketBean.setTicketSelezionato(new WebTicket());
+
+        logger.trace("Exit");
+
     }
 
     public void filtraTicket() {
+
+        logger.trace("Enter");
 
         VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
         GestioneMacchineBean gestioneMacchinaBean = ApplicationContextAwareImpl.<GestioneMacchineBean>getBean("gestioneMacchineBean");
@@ -108,9 +125,14 @@ public class VisualizzazioneTicketCtrl {
         UIViewRoot root = FacesContext.getCurrentInstance().getViewRoot();
         DataTable dataTable = (DataTable) root.findComponent("listaTicketForm:tabellaTicketDT");
         dataTable.reset();
+
+        logger.trace("Exit");
+
     }
 
     public void aggiornaNoteTicket() {
+
+        logger.trace("Enter");
 
         VisualizzazioneTicketBean visualizzazioneTicketBean = ApplicationContextAwareImpl.<VisualizzazioneTicketBean>getBean("visualizzazioneTicketBean");
 
@@ -162,7 +184,13 @@ public class VisualizzazioneTicketCtrl {
         ticket.setPrintError(ticketSelezionato.getPrintError());
         ticket.setNotes(ticketSelezionato.getNotes());
 
-        mapper.updateNoteTicket(ticket);
+        try {
+            mapper.updateNoteTicket(ticket);
+        } catch (MyBatisSystemException e) {
+            logger.error(e.getMessage());
+        }
+
+        logger.trace("Exit");
 
     }
 

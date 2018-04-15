@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.mybatis.spring.MyBatisSystemException;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dv.webmanager.db.bean.Machine;
 import com.dv.webmanager.db.bean.Ticket;
@@ -18,18 +21,14 @@ import com.dv.webmanager.main.Constants.PrintStatus;
 public class LazyTicketDataModel extends LazyDataModel<WebTicket> {
 
     private static final long serialVersionUID = 1L;
-    private static final int PAGE_SIZE_BUFFER = 3;
+
+    private static final Logger logger = LoggerFactory.getLogger(LazyTicketDataModel.class);
 
     private GestioneMacchineBean gestioneMacchinaBean;
 
     private List<Ticket> listaTicket;
     private TicketMapper ticketMapper;
     private TicketFilter filtro;
-
-    private int lastDBPageSize; // dimensione di pagina
-    private int lastDBStartIndex; // indice di partenza query db
-    private int lastDBBufferSize; // dimensione buffer query
-    private int lastMachineCount;
 
     public LazyTicketDataModel(
             GestioneMacchineBean gestioneMacchinaBean,
@@ -40,14 +39,11 @@ public class LazyTicketDataModel extends LazyDataModel<WebTicket> {
         this.gestioneMacchinaBean = gestioneMacchinaBean;
         this.ticketMapper = ticketMapper;
         this.filtro = filtro;
-        this.lastDBPageSize = -1;
-        this.lastDBStartIndex = -1;
-        this.lastDBBufferSize = 0;
-        this.lastMachineCount = 0;
-
     }
 
     public List<WebTicket> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+
+        logger.trace("Enter");
 
         if (filtro.getMachineList().isEmpty()) {
             this.setRowCount(0);
@@ -55,39 +51,29 @@ public class LazyTicketDataModel extends LazyDataModel<WebTicket> {
         }
 
         // questa query la faccio sempre se c'e' almeno una macchina in DB
-        int ticketCount = ticketMapper.selectTicketCount(filtro);
+
+        int ticketCount;
+        try {
+            ticketCount = ticketMapper.selectTicketCount(filtro);
+        } catch (MyBatisSystemException e) {
+            logger.error(e.getMessage());
+            return Collections.<WebTicket>emptyList();
+        }
+
         this.setRowCount(ticketCount);
-        listaTicket = ticketMapper.selectTicketLimit(filtro, pageSize, first);
-
-
-//        if ( (this.lastDBPageSize != pageSize) ||                           // se ho cambiato dimensione della pagina
-//                (first >= (lastDBStartIndex + this.lastDBPageSize*(PAGE_SIZE_BUFFER)) ) ||
-//                (first < lastDBStartIndex) ) {  // oppure l'indice della pagina non e' compreso nel buffer
-//
-//            // questo serve per gestire il caso di filtraggio quando ho gia' cambiato pagina
-//            if (this.lastDBPageSize == -1)
-//                first = 0;
-//
-//            // faccio la query a DB
-//            this.lastDBPageSize = pageSize;
-//            this.lastDBBufferSize = this.lastDBPageSize * PAGE_SIZE_BUFFER;
-//            this.lastDBStartIndex = first/lastDBBufferSize * lastDBBufferSize;
-//
-//            listaTicket = ticketMapper.selectTicketLimit(filtro, this.lastDBBufferSize, lastDBStartIndex);
-//
-//        }
-//
-//        int sublistIndexFrom = first % this.lastDBBufferSize;
-//        int sublistIndexTo = sublistIndexFrom + this.lastDBPageSize;
-//
-//        sublistIndexTo = Integer.min(sublistIndexTo, listaTicket.size());
-//
-//        List<Ticket> list2Show = listaTicket.subList(sublistIndexFrom, sublistIndexTo);
+        try {
+            listaTicket = ticketMapper.selectTicketLimit(filtro, pageSize, first);
+        } catch (MyBatisSystemException e) {
+            logger.error(e.getMessage());
+            return Collections.<WebTicket>emptyList();
+        }
 
         List<Ticket> list2Show = listaTicket;
         List<WebTicket> webTicketList = new ArrayList<WebTicket>();
         for (Ticket t: list2Show)
             webTicketList.add(this.getWebTicketFromTicket(t));
+
+        logger.trace("Exit");
 
         return webTicketList;
 
