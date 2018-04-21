@@ -22,7 +22,12 @@
                 <TimeBasedTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="250 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="5"/>
+            <DefaultRolloverStrategy fileindex="max" max="5">
+                <Delete basePath="${sys:jboss.server.log.dir}" maxDepth="2">
+                    <IfFileName glob="dvwebmanager-*.log.gz" />
+                    <IfLastModified age="5d" />
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingFile>
         
         <RollingFile
@@ -36,7 +41,12 @@
                 <TimeBasedTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="250 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="5"/>
+            <DefaultRolloverStrategy fileindex="max" max="5">
+                <Delete basePath="${sys:jboss.server.log.dir}" maxDepth="2">
+                    <IfFileName glob="dvwebmanager-*.log.gz" />
+                    <IfLastModified age="5d" />
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingFile>
     
     </Appenders>
@@ -47,7 +57,7 @@
             <AppenderRef ref="RollingFileSpringBeansFactory" />
         </Logger>
     
-        <Root level="TRACE" additivity="false" >
+        <Root level="INFO" additivity="false" >
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile" />
         </Root>
