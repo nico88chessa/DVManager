@@ -1,0 +1,4 @@
+INSERT INTO MACHINE (ID, NAME, LAST_UPDATE, IP) VALUES
+(1, 'macchina1', NULL, '192.168.001.001'),
+(2, 'macchina2', '2018-03-30 16:11:55', '192.168.001.166'),
+(3, 'macchina3', NULL, '192.168.002.001');

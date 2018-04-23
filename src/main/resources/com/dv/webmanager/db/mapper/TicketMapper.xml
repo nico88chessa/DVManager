@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dv.webmanager.db.mapper.TicketMapper">
+
+    <!-- BEAN/DATA MAPPERS -->
+
+    <resultMap type="Ticket" id="Ticket">
+        <id column="ID_M" property="idM" />
+        <id column="ID_T" property="idT" />
+        <id column="QUEUE_ACTIVATED" property="queueActivated" />
+        <id column="QUEUE_POSITION" property="queuePosition" />
+        <id column="WORK_ID" property="workId" />
+        <id column="FILE_NAME" property="fileName" />
+        <id column="FILE_LENGTH" property="fileLength" />
+        <id column="FILE_HEIGHT" property="fileHeight" />
+        <id column="FILE_PIXEL_X" property="filePixelX" />
+        <id column="FILE_PIXEL_Y" property="filePixelY" />
+        <id column="FILE_RESOLUTION_X" property="fileResolutionX" />
+        <id column="FILE_RESOLUTION_Y" property="fileResolutionY" />
+        <id column="FILE_TOTALPIXELX" property="fileTotalpixelX" />
+        <id column="FILE_TOTALPIXELY" property="fileTotalpixelY" />
+        <id column="FILE_TOTALSIZEX" property="fileTotalsizex" />
+        <id column="FILE_TOTALSIZEY" property="fileTotalsizey" />
+        <id column="CYLINDER_LENGTH" property="cylinderLength" />
+        <id column="CYLINDER_DIAMETER" property="cylinderDiameter" />
+        <id column="CYLINDER_START_AT" property="cylinderStartAt" />
+        <id column="CYLINDER_CROSS_AT" property="cylinderCrossAt" />
+        <id column="LASER_KIND" property="laserKind" />
+        <id column="LASER_SOURCES" property="laserSources" />
+        <id column="LASER_MIN_POWER" property="laserMinPower" />
+        <id column="LASER_MAX_POWER" property="laserMaxPower" />
+        <id column="LASER_SHOTS" property="laserShots" />
+        <id column="LASER_PERIOD" property="laserPeriod" />
+        <id column="SETUP_CALIBRATION" property="setupCalibration" />
+        <id column="SETUP_OFFSET_X" property="setupOffsetX" />
+        <id column="SETUP_OFFSET_Y" property="setupOffsetY" />
+        <id column="SETUP_Z_PRESENT" property="setupZPresent" />
+        <id column="SETUP_Z_POSITION" property="setupZPosition" />
+        <id column="SETUP_FOCAL_PRESENT" property="setupFocalPresent" />
+        <id column="SETUP_FOCAL_POSITION" property="setupFocalPosition" />
+        <id column="SETUP_SPEED" property="setupSpeed" />
+        <id column="SETUP_ENGRAVING_MODE" property="setupEngravingMode" />
+        <id column="PRINT_START_AT" property="printStartAt" />
+        <id column="PRINT_STOP_AT" property="printStopAt" />
+        <id column="PRINT_STATUS" property="printStatus" />
+        <id column="PRINT_ERROR" property="printError" />
+        <id column="NOTES" property="notes" />
+    </resultMap>
+    
+    <resultMap type="Machine" id="Machine">
+        <id column="ID" property="id" />
+        <id column="NAME" property="name" />
+        <id column="LAST_UPDATE" property="lastUpdate" />
+        <id column="IP" property="ip" />
+        <id column="TO_DELETE" property="toDelete" />
+    </resultMap>
+    
+    <!-- QUERY -->
+    
+    <insert id="insertMachine" parameterType="Machine" useGeneratedKeys="true">
+        INSERT INTO MACHINE(NAME, LAST_UPDATE, IP)
+        VALUES (#{name}, #{lastUpdate}, #{ip})
+    </insert>
+
+    <delete id="deleteMachine" parameterType="Machine" flushCache="true">
+        UPDATE MACHINE
+        SET TO_DELETE = TRUE
+        WHERE MACHINE.ID = #{id}
+    </delete>
+    
+    <update id="updateNoteTicket" parameterType="Machine" flushCache="true">
+        UPDATE PRINT_TICKET
+        SET NOTES = #{notes}
+        WHERE ID_M = #{idM} AND ID_T = #{idT}
+    </update>
+    
+    <update id="updateMachine" parameterType="Machine" flushCache="true">
+        UPDATE MACHINE
+        SET NAME = #{name},
+        IP = #{ip}
+        WHERE ID = #{id}
+    </update>
+    
+    <select id="selectMachine" resultMap="Machine">
+        SELECT * FROM MACHINE
+        WHERE TO_DELETE = FALSE
+    </select>
+    
+    <select id="selectMachineCount" resultType="int">
+        SELECT COUNT(*) FROM MACHINE
+        WHERE TO_DELETE = FALSE
+    </select>
+    
+    <select id="selectTicketCount" resultType="int">
+        SELECT COUNT(*) FROM PRINT_TICKET
+        WHERE ID_M IN (SELECT ID FROM MACHINE WHERE TO_DELETE=FALSE)
+        AND ID_M IN
+        <foreach item="machine" collection="machineList" separator="," open="(" close=")">
+            (#{machine.id})
+        </foreach>
+        <if test="idMachine != -1">
+            AND ID_M = #{idMachine}
+        </if>
+        <if test="filename != null">
+            <bind name="filenameStr" value="'%' + filename + '%'" />
+            AND FILE_NAME LIKE #{filenameStr}
+        </if>
+        <if test="dateStart != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) >= #{dateStart}
+            ]]>
+        </if>
+        <if test="dateEnd != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) <= #{dateEnd}
+            ]]>
+        </if>
+        <if test="laserKind != -255">
+            AND LASER_KIND = #{laserKind}
+        </if>
+        
+        <if test="printStatus!=null and printStatus.length != 0">
+            AND PRINT_STATUS IN
+            <foreach item="item" collection="printStatus" separator="," open="(" close=")">
+                (#{item})
+            </foreach>
+        </if>
+        ORDER BY PRINT_START_AT DESC
+    </select>
+
+    <select id="selectTicket" parameterType="TicketFilter" resultMap="Ticket">
+        SELECT * FROM PRINT_TICKET
+        WHERE ID_M IN (SELECT ID FROM MACHINE WHERE TO_DELETE=FALSE)
+        AND ID_M IN
+        <foreach item="machine" collection="machineList" separator="," open="(" close=")">
+            (#{machine.id})
+        </foreach>
+        <if test="idMachine != -1">
+            AND ID_M = #{idMachine}
+        </if>
+        <if test="filename != null">
+            <bind name="filenameStr" value="'%' + filename + '%'" />
+            AND FILE_NAME LIKE #{filenameStr}
+        </if>
+        <if test="dateStart != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) >= #{dateStart}
+            ]]>
+        </if>
+        <if test="dateEnd != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) <= #{dateEnd}
+            ]]>
+        </if>
+        <if test="laserKind != -255">
+            AND LASER_KIND = #{laserKind}
+        </if>
+        
+        <if test="printStatus!=null and printStatus.length != 0">
+            AND PRINT_STATUS IN
+            <foreach item="item" collection="printStatus" separator="," open="(" close=")">
+                (#{item})
+            </foreach>
+        </if>
+        ORDER BY PRINT_START_AT DESC
+    </select>
+    
+    <select id="selectTicketLimit" parameterType="map" resultMap="Ticket">
+        SELECT * FROM PRINT_TICKET
+        WHERE ID_M IN (SELECT ID FROM MACHINE WHERE TO_DELETE=FALSE)
+        AND ID_M IN
+        <foreach item="machine" collection="ticketFilter.machineList" separator="," open="(" close=")">
+            (#{machine.id})
+        </foreach>
+        <if test="ticketFilter.idMachine != -1">
+            AND ID_M = #{ticketFilter.idMachine}
+        </if>
+        <if test="ticketFilter.filename != null">
+            <bind name="filenameStr" value="'%' + ticketFilter.filename + '%'" />
+            AND FILE_NAME LIKE #{filenameStr}
+        </if>
+        <if test="ticketFilter.dateStart != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) >= #{ticketFilter.dateStart}
+            ]]>
+        </if>
+        <if test="ticketFilter.dateEnd != null">
+            <![CDATA[
+            AND CAST(PRINT_START_AT AS DATE) <= #{ticketFilter.dateEnd}
+            ]]>
+        </if>
+        <if test="ticketFilter.laserKind != -255">
+            AND LASER_KIND = #{ticketFilter.laserKind}
+        </if>
+        
+        <if test="ticketFilter.printStatus!=null and ticketFilter.printStatus.length != 0">
+            AND PRINT_STATUS IN
+            <foreach item="item" collection="ticketFilter.printStatus" separator="," open="(" close=")">
+                (#{item})
+            </foreach>
+        </if>
+        ORDER BY PRINT_START_AT DESC
+        LIMIT #{count} OFFSET #{offset}
+    </select>
+    
+    
+</mapper>

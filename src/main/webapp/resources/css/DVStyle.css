@@ -1,0 +1,154 @@
+#title {
+	font-size: 30px;
+	color: #557CC1;
+	margin: 25px;
+	float: left;
+	font-weight: 700;
+	text-shadow: -1px -1px #113E79;
+}
+
+.ui-widget {
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+}
+
+/* div #header { */
+/* 	margin: 5px; */
+/* 	position: absolute; */
+/* 	top: 0px; */
+/* 	height: 100px; */
+/*     width: 90%; */
+/* 	background-color: #00FFFF; */
+/* } */
+
+/* div #left { */
+/*     margin: 5px; */
+/*     position: absolute; */
+/*     top: 110px; */
+/*     min-width: 500px; */
+/*     max-width: 500px; */
+/*     height: 80%; */
+/*     background-color: #FF0000; */
+/* } */
+
+/* div #content { */
+/*     margin: 5px; */
+/*     position: absolute; */
+/*     top: 110px; */
+/*     left: 515px; */
+/*     height: 50%; */
+/*     width: 55%; */
+/*     height: 80%; */
+/*     background-color: #FFFF00; */
+/* } */
+
+.ui-icon-edit {
+    background-image: url("#{resource['icons/ic_mode_edit_black_24dp_1x.png']}") !important;
+    width: 24px !important;
+    height: 24px !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 0px !important;
+    margin-left: 2px !important;
+    margin-top: -12px !important;
+}
+
+.ui-icon-cancel {
+    background: url("#{resource['icons/ic_delete_black_24dp_1x.png']}") !important;
+	width: 24px !important;
+	height: 24px !important;
+	position: absolute !important;
+	top: 50% !important;
+	left: 0px !important;
+	margin-left: 2px !important;
+	margin-top: -12px !important;
+}
+
+.ui-icon-ping {
+    background-image: url("#{resource['icons/ic_settings_ethernet_black_24dp_1x.png']}") !important;
+	width: 24px !important;
+	height: 24px !important;
+	position: absolute !important;
+	top: 50% !important;
+	left: 0px !important;
+	margin-left: 2px !important;
+	margin-top: -12px !important;
+}
+
+.ui-icon-dettaglio-ticket {
+    background-image: url("#{resource['icons/ic_search_black_24dp_1x.png']}") !important;
+    width: 24px !important;
+    height: 24px !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 0px !important;
+    margin-left: 2px !important;
+    margin-top: -12px !important;
+}
+
+.ipItaStyle {
+	font-family: monospace !important;
+	background-color: black !important;
+	color: white !important;
+	font-size: small !important;
+    width: 98% !important;
+    height: 90% !important;
+}
+
+.filtroRicercaSxContent {
+	margin-top: 5px;
+}
+
+div #leftMenu {
+    height: 100%;
+}
+
+#menuButtonForm .ui-menu {
+    width: 100%;
+    height: 100%;
+}
+
+.filtroRicercaDxContent,
+.filtroRicercaDxCalendarContent input {
+    width: 240px;
+}
+
+.labelWidth {
+	width: 200px;
+	float: left;
+	padding: 10px 0px 4px 0px;
+}
+
+.fieldWidth {
+    width: 400px;
+    float: left;
+    padding: 4px 0px 4px 0px;
+}
+
+.labelWidth2 {
+    float: left;
+    padding: 10px 10px 4px 0px;
+}
+
+.fieldWidth2 {
+    float: left;
+    padding: 4px 10px 4px 0px;
+}
+
+.outputLabelStyle {
+    width: 330px;
+}
+
+.inputTextStyle {
+	width: 250px;
+}
+
+.subTitleListaTicketDLG {
+	float: left;
+	width: 100%;
+	padding: 4px 0px 4px 0px;
+	text-align: center;
+	background: linear-gradient(to top, #C4C4C4, #FFFFFF);
+	border: 1px solid gray;
+	font-weight: 700; 
+}

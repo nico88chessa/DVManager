@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+
+    <f:facet name="last">
+        <h:outputStylesheet library="css" name="DVStyle.css" />
+    </f:facet>
+
+    <div class="ui-g">
+
+        <div class="ui-g-12">
+            <div id="header">
+                <p:graphicImage name="icons/logoDV.jpg" width="150px" style="float: left" />
+                <p:outputLabel id="title" value="DV Web Manager" />
+                <ui:insert name="header" />
+            </div>
+        </div>
+
+        <div class="ui-g-12">
+
+            <div id="leftMenu" class="ui-g-2">
+                
+                <h:form id="menuButtonForm">
+                    <p:menu>
+                        <p:menuitem id="menuGestioneMacchine" value="Gestione Macchine" action="gestioneMacchineAction" />
+                        <p:menuitem id="menuVisualizzazioneTicket" value="Visualizzazione Ticket" action="visualizzazioneTicketAction" />
+                    </p:menu>
+                </h:form>
+                <ui:insert name="left" />
+            
+            </div>
+
+            <div class="ui-g-10">
+                <div id="content">
+                    
+                    <p:growl id="globalGrow" showDetail="true" />
+                    
+                    <!-- visualizzo una dialog durante l'esecuzione di comandi ajax -->
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:outputLabel value="Loading" />
+                    </p:dialog>
+
+                    <ui:insert name="content" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</h:body>
+</f:view>
+</html>

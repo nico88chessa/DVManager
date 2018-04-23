@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <on-start>
+        <evaluate expression="gestioneMacchineCtrl.init()" />
+        <evaluate expression="visualizzazioneTicketCtrl.init()" />
+    </on-start>
+
+    <view-state id="gestioneMacchine">
+        <on-entry>
+            <evaluate expression="gestioneMacchineCtrl.updateMachineList()" />
+        </on-entry>
+        <transition on="gestioneMacchineAction" to="" />
+        <transition on="visualizzazioneTicketAction" to="visualizzazioneTicket" />
+    </view-state>
+
+    <view-state id="visualizzazioneTicket">
+        <on-entry>
+            <evaluate expression="visualizzazioneTicketCtrl.aggiornaListaMacchineFiltro()" />
+        </on-entry>
+        <transition on="visualizzazioneTicketAction" to="" />
+        <transition on="gestioneMacchineAction" to="gestioneMacchine" />
+    </view-state>
+
+
+</flow>

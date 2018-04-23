@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+    
+<ui:composition template="/WEB-INF/layout/appLayout.xhtml">
+
+    <ui:define name="content">
+
+        <div id="gestioneMacchine">
+        
+            <div class="ui-g">
+            
+            
+            
+                <!-- qui visualizzo il pulsante per aggiungere una nuova macchina -->
+                <div class="ui-g-12">
+                    <h:form id="newMachineForm">
+                        <p:commandButton
+                            id="inserisciMacchinaCB"
+                            widgetVar="inserisciMacchinaCB"
+                            value="Nuova macchina"
+                            icon="ui-icon-star"
+                            actionListener="#{gestioneMacchineCtrl.clearNewMachineValues()}"
+                            oncomplete="PF('inserisciMacchinaDlg').show()"
+                            update=":newMachineForm:inserisciMacchinaDlg" />
+                            
+                        <p:commandButton
+                            id="aggiornaListaMacchineCB"
+                            widgetVar="aggiornaListaMacchineCB"
+                            value="Aggiorna lista"
+                            actionListener="#{gestioneMacchineCtrl.updateMachineList()}"
+                            update="globalGrow, :machineForm:machines" />
+
+                        <p:dialog
+                            id="inserisciMacchinaDlg"
+                            widgetVar="inserisciMacchinaDlg"
+                            header="Inserisci macchina"
+                            modal="true"
+                            height="200"
+                            width="500"
+                            minHeight="200"
+                            minWidth="400">
+
+                            <div class="ui-g">
+
+                                <div class="ui-g-6" style="">
+                                    <p:outputLabel
+                                        value="Nome macchina" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask
+                                        id="nomeMacchinaIM"
+                                        widgetVar="nomeMacchinaIM"
+                                        slotChar=" "
+                                        value="#{gestioneMacchineBean.nuovaMacchina.name}" />
+                                </div>
+
+                                <div class="ui-g-6">
+                                    <p:outputLabel
+                                        value="Indirizzo IP" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask
+                                        id="ipIM"
+                                        widgetVar="ipIM"
+                                        mask="9?99.999.999.999"
+                                        slotChar="0"
+                                        value="#{gestioneMacchineBean.nuovaMacchina.ip}" />
+                                </div>
+
+                                <f:facet name="footer">
+                                    <div class="ui-g-8" />
+
+                                    <div class="ui-g-2">
+                                        <p:commandButton
+                                            id="confermaInserimentoCB"
+                                            widgetVar="confermaInserimentoCB"
+                                            value="Inserisci"
+                                            onclick="PF('inserisciMacchinaDlg').hide()"
+                                            actionListener="#{gestioneMacchineCtrl.addNewMachineToDB()}"
+                                            update="globalGrow, :machineForm:machines" />
+                                    </div>
+
+                                    <div class="ui-g-2">
+                                        <p:commandButton
+                                            id="annullaInserimentoCB"
+                                            widgetVar="annullaInserimentoCB"
+                                            value="Annulla"
+                                            onclick="PF('inserisciMacchinaDlg').hide()" />
+                                    </div>
+
+                                </f:facet>
+
+                            </div>
+
+                        </p:dialog>
+                    </h:form> 
+                </div>
+                
+                
+            
+                <!-- questa e' la tabella di visualizzazione dei dati -->
+                <div class="ui-g-12">
+                    
+                    <div id="machinesDiv" class="ui-g">
+                    
+                        <h:form id="machineForm">
+                    
+                            <!-- tabella valori -->
+                            <p:dataTable
+                                id="machines"
+                                value="#{gestioneMacchineBean.listaMacchine}"
+                                var="item"
+                                editable="true">
+                                
+                                <p:column headerText="Nome">
+                                    <p:outputLabel value="#{item.name}" />
+                                </p:column>
+                                <p:column headerText="ID">
+                                    <p:outputLabel value="#{item.id}" />
+                                </p:column>
+                                <p:column headerText="Indirizzo IP">
+                                    <p:outputLabel value="#{item.ip}" />
+                                </p:column>
+                                <p:column headerText="Ultimo aggiornamento">
+                                    <p:outputLabel
+                                        value="#{item.lastUpdate eq null ? '-' : item.lastUpdate}"
+                                        />
+                                </p:column>
+                                <p:column headerText="Modifica" style="width:5%" >
+                                    <p:commandButton
+                                        id="modificaMachineCB"
+                                        widgetVar="modificaMachineCB"
+                                        update=":editForm:modificaMachineOP"
+                                        icon="ui-icon-edit"
+                                        oncomplete="PF('editMachineDlg').show()"
+                                        style="position: relative; left: 30%" >
+                                        <f:setPropertyActionListener
+                                            value="#{item}"
+                                            target="#{gestioneMacchineBean.macchinaSelezionata}" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column headerText="Elimina" style="width:5%" >
+                                    <p:commandButton
+                                        id="eliminaMachineCB"
+                                        widgetVar="eliminaMachineCB"
+                                        update=":deleteForm:deleteMachineDlg"
+                                        icon="ui-icon-cancel"
+                                        oncomplete="PF('deleteMachineDlg').show()"
+                                        style="position: relative; left: 30%" >
+                                        <f:setPropertyActionListener
+                                            value="#{item}"
+                                            target="#{gestioneMacchineBean.macchinaSelezionata}" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column headerText="Ping test" style="width:10%" >
+                                    <p:commandButton
+                                        id="pingMachineCB"
+                                        widgetVar="pingMachineCB"
+                                        icon="ui-icon-ping"
+                                        global="false"
+                                        oncomplete="callIP()"
+                                        style="position: relative; left:40%" >
+                                        <f:setPropertyActionListener
+                                            value="#{item}"
+                                            target="#{gestioneMacchineBean.macchinaSelezionata}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        
+                        </h:form>
+
+                        <h:form id="deleteForm">
+                            <!-- finestra dialogo per cancellazione macchina -->
+                            <p:dialog
+                                id="deleteMachineDlg"
+                                widgetVar="deleteMachineDlg"
+                                modal="true"
+                                width="500"
+                                height="200"
+                                resizable="false"
+                                >
+    
+                                <p:outputPanel id="confermaDeleteOP">
+                                <div class="ui-g-12">
+                                    <p:outputLabel
+                                        value="Confermi di voler eliminare la macchina?" />
+                                </div>
+    
+                                <div class="ui-g-6" style="">
+                                    <p:outputLabel
+                                        value="Nome macchina" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask
+                                        id="nomeMacchinaIM"
+                                        widgetVar="nomeMacchinaIM"
+                                        slotChar=" "
+                                        readonly="true"
+                                        value="#{gestioneMacchineBean.macchinaSelezionata.name}"
+                                    />
+                                </div>
+    
+                                <div class="ui-g-6">
+                                    <p:outputLabel value="Indirizzo IP" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask
+                                        id="ipIM"
+                                        widgetVar="ipIM"
+                                        mask="9?99.999.999.999"
+                                        slotChar="0" readonly="true"
+                                        value="#{gestioneMacchineBean.macchinaSelezionata.ip}"
+                                    />
+                                </div>
+                                </p:outputPanel>
+                                <f:facet name="footer">
+                                    <div class="ui-g-6" />
+    
+                                    <div class="ui-g-3">
+                                        <p:commandButton
+                                            id="confermaDeleteCB"
+                                            widgetVar="confermaDeleteCB"
+                                            value="Elimina"
+                                            onclick="PF('deleteMachineDlg').hide()"
+                                            actionListener="#{gestioneMacchineCtrl.deleteMachineFromDB()}"
+                                            update="globalGrow, :machineForm:machines"
+                                        />
+                                    </div>
+    
+                                    <div class="ui-g-3">
+                                        <p:commandButton
+                                            id="annullaDeleteCB"
+                                            widgetVar="annullaDeleteCB"
+                                            value="Annulla"
+                                            onclick="PF('deleteMachineDlg').hide()"
+                                        />
+                                    </div>
+                                </f:facet>
+                            </p:dialog>
+                        
+                        </h:form>
+                        
+                        <h:form id="editForm">
+                            <!-- finestra dialogo per modificare campi della macchina -->
+                            <p:dialog
+                                id="editMachineDlg"
+                                widgetVar="editMachineDlg"
+                                modal="true"
+                                width="500"
+                                height="200"
+                                resizable="false"
+                                >
+    
+                                <p:outputPanel id="modificaMachineOP">
+                                <div class="ui-g-12">
+                                    <p:outputLabel
+                                        value="Modifica campi macchina" />
+                                </div>
+    
+                                <div class="ui-g-6" style="">
+                                    <p:outputLabel
+                                        value="Nome macchina" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask
+                                        id="editNomeMacchinaIM"
+                                        widgetVar="editNomeMacchinaIM"
+                                        slotChar=" "
+                                        readonly="false"
+                                        value="#{gestioneMacchineBean.macchinaSelezionata.name}"
+                                    />
+                                </div>
+    
+                                <div class="ui-g-6">
+                                    <p:outputLabel value="Indirizzo IP" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputMask
+                                        id="editIpIM"
+                                        widgetVar="editIpIM"
+                                        mask="9?99.999.999.999"
+                                        slotChar="0"
+                                        value="#{gestioneMacchineBean.macchinaSelezionata.ip}"
+                                    />
+                                </div>
+                                </p:outputPanel>
+                                <f:facet name="footer">
+                                    <div class="ui-g-6" />
+    
+                                    <div class="ui-g-3">
+                                        <p:commandButton
+                                            id="confermaEditCB"
+                                            widgetVar="confermaEditCB"
+                                            value="Modifica"
+                                            onclick="PF('editMachineDlg').hide()"
+                                            actionListener="#{gestioneMacchineCtrl.modificaMacchinaInDB()}"
+                                            update="globalGrow, :machineForm:machines"
+                                        />
+                                    </div>
+    
+                                    <div class="ui-g-3">
+                                        <p:commandButton
+                                            id="annullaEditMacchinaCB"
+                                            widgetVar="annullaEditMacchinaCB"
+                                            value="Annulla"
+                                            onclick="PF('editMachineDlg').hide()"
+                                        />
+                                    </div>
+                                </f:facet>
+                            </p:dialog>
+
+                        </h:form>
+
+
+                        <h:form id="ipForm">
+
+                            <!-- finestra dialogo per comando di ping -->
+                            <p:dialog
+                                id="ipDlg"
+                                widgetVar="ipDlg"
+                                modal="true"
+                                resizable="true"
+                                visible="false"
+                                width="540"
+                                height="500">
+    
+                                <p:inputTextarea
+                                    id="ipITA"
+                                    widgetVar="ipITA"
+                                    value="#{gestioneMacchineBean.ipRisultato}"
+                                    readonly="true"
+                                    styleClass="ipItaStyle"
+                                />
+    
+                            </p:dialog>
+    
+                            <p:remoteCommand
+                                name="callIP"
+                                actionListener="#{gestioneMacchineCtrl.pingMachine}"
+                                update="ipForm:ipDlg"
+                                oncomplete="PF('ipDlg').show()" />
+
+                        </h:form>
+                
+                    </div>
+
+                </div>
+
+                
+            </div>
+        
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+
+</h:body>
+
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- lo status indica il livello di log da associare agli eventi di log4j -->
+<Configuration status="WARN">
+    
+    <Appenders>
+    
+        <Console
+            name="Console"
+            target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="%d{dd-MM-yyyy HH:mm:ss.SSS} [%t] %-5p %c{10} - %m%n" />
+        </Console>
+    
+        <RollingFile
+            name="RollingFile"
+            fileName="${sys:jboss.server.log.dir}/dvwebmanager.log"
+            filePattern="${sys:jboss.server.log.dir}/dvwebmanager-%d{yyyyMMdd}-%i.log.gz"
+            append="true"
+            >
+            <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss.SSS} [%t] %-5p %c{10} - %m%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileindex="max" max="5">
+                <Delete basePath="${sys:jboss.server.log.dir}" maxDepth="2">
+                    <IfFileName glob="dvwebmanager-*.log.gz" />
+                    <IfLastModified age="5d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        
+        <RollingFile
+            name="RollingFileSpringBeansFactory"
+            fileName="${sys:jboss.server.log.dir}/dvwebmanager-sbf.log"
+            filePattern="${sys:jboss.server.log.dir}/dvwebmanager-sbf-%d{yyyyMMdd}-%i.log.gz"
+            append="true"
+            >
+            <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss.SSS} [%t] %-5p %c{10} - %m%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileindex="max" max="5">
+                <Delete basePath="${sys:jboss.server.log.dir}" maxDepth="2">
+                    <IfFileName glob="dvwebmanager-*.log.gz" />
+                    <IfLastModified age="5d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    
+    </Appenders>
+    
+    <Loggers>
+    
+        <Logger name="org.springframework.beans.factory" level="TRACE" additivity="false">
+            <AppenderRef ref="RollingFileSpringBeansFactory" />
+        </Logger>
+    
+        <Root level="INFO" additivity="false" >
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+    
+    </Loggers>
+    
+</Configuration>
